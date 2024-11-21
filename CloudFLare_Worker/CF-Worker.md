@@ -63,6 +63,6 @@
 
 完成绑定后选择部署,此时点击右上角访问即可正常进入链接
 
-链接使用见[这里](https://github.com/yixuan-ovo/ImmortalWrt-Files/blob/2ba744524f589ff5937f81bdf6a9cac76c1bcbc9/OpenClash/openclash-tutorials/%E4%B8%80%E4%B8%AA%E9%93%BE%E6%8E%A5%E5%90%8C%E6%97%B6%E5%AE%9E%E7%8E%B0%E9%85%8D%E7%BD%AE%E6%A8%A1%E6%9D%BF%E5%92%8C%E5%90%8E%E7%AB%AF%E8%AE%A2%E9%98%85%E8%BD%AC%E6%8D%A2.md)
+### [订阅链接的转换拼接](https://github.com/yixuan-ovo/TutorialFiles_yx/blob/main/%E4%B8%80%E4%B8%AA%E9%93%BE%E6%8E%A5%E5%90%8C%E6%97%B6%E5%AE%9E%E7%8E%B0%E9%85%8D%E7%BD%AE%E6%A8%A1%E6%9D%BF%E5%92%8C%E5%90%8E%E7%AB%AF%E8%AE%A2%E9%98%85%E8%BD%AC%E6%8D%A2.md)
 
 ## *也可选择创建R2对象存储,但需要绑定信用卡*
