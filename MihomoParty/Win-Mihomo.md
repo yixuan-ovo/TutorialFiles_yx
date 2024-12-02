@@ -1,6 +1,8 @@
 ## 2024.12.2更新:
 需要找一下设置mihomoparty的dns解析为当前网络连接的dns的办法,不然需要每次手动改
 
+---
+
 # 软件地址
 -       https://github.com/mihomo-party-org/mihomo-party
 
