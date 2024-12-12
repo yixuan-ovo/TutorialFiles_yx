@@ -1,3 +1,21 @@
+12.12更新:
+
+新增steam规则:除下载外其余steam流量都走代理,steam代理组选择代理
+
+覆写内增加steam.yaml文件,内容如下:
+```
+rewrite:
+  - geosite:steam@cn,DIRECT
+  - domain:steamserver.net,DIRECT
+```
+上述写法未找到等价代码,等待后续查询资料
+
+经测试暂无问题,等待后续使用验证
+
+表现为下载游戏时连接内看不到下载的速度,应该是走了geosite:cn
+
+---
+
 # 软件地址
 -       https://github.com/mihomo-party-org/mihomo-party
 
