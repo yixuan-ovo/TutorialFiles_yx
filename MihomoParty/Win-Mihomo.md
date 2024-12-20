@@ -1,3 +1,20 @@
+## 2024.12.20更新:
+完善覆写规则
+```
+rewrite:
+  - geosite:steam@cn,DIRECT
+  - gstore.val.manlaxy.com,DIRECT
+
++rules:
+  - DOMAIN-SUFFIX,yixr.fun,DIRECT
+  - DOMAIN-SUFFIX,chatboxai.app,DIRECT
+  - DOMAIN-SUFFIX,ingest.global-contribute.live-video.net,DIRECT
+  - DOMAIN-SUFFIX,immersivetranslate.com,DIRECT
+  - DOMAIN-SUFFIX,adblockplus.org,DIRECT
+  - DOMAIN-SUFFIX,download.nvidia.com,DIRECT
+  - DOMAIN-SUFFIX,gyg.si,DIRECT
+```
+
 ## 2024.12.16更新:
 新增一条漏网之鱼steam下载规则:
 ![alt text](./img/10.jpg)
