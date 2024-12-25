@@ -165,8 +165,13 @@ geosite更新url:
 **新版本没有配置项,可忽略**
 
 # openclash规则附加:
+按如图配置即可,更新push后过几分钟更新规则即可生效,避免重启服务,链接如下:
 
+    https://raw.githubusercontent.com/yixuan-ovo/TutorialFiles_yx/refs/heads/main/OpenClash/direct_rules/yx_direct.yaml
 
+![12](./img/111.png)
+
+![2](./img/222.png)
 
 # openclash配置订阅
 **漏网之鱼不能选全球直连！选择直连会泄露DNS。此时在绕过大陆ip选项的作用下，国内ip不会走clash内核**
