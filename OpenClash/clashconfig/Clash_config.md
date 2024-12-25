@@ -30,15 +30,17 @@ luci-app-openclash			不解释
 ## lan口
 网络-接口:删除wan6接口，编辑br-lan接口
 
-
+![alt text](./img/image.png)
 
 DHCP服务器-ipv6设置:禁用三个ipv6服务，不勾选指定的主接口
 
+![alt text](./img/image-1.png)
 
+![alt text](./img/image-2.png)
 
 全局网络选项删除ipv6地址
 
-
+![alt text](./img/image-3.png)
 
 ## 网络-DHCP/DNS-过滤器
 勾选过滤ipv6 AAAA记录
@@ -67,6 +69,8 @@ DHCP服务器-ipv6设置:禁用三个ipv6服务，不勾选指定的主接口
 
 代理模式Rule
 
+![alt text](./img/image-4.png)
+
 ## 插件-流量控制
 勾选路由本机代理、禁用QUIC、绕过服务器地址、实验性绕过中国大陆IP（配置延迟低的dns）、仅允许内网
 
@@ -74,10 +78,14 @@ DHCP服务器-ipv6设置:禁用三个ipv6服务，不勾选指定的主接口
 
 lan接口配置为br-lan
 
+![alt text](./img/image-5.png)
+
 ## 插件-DNS设置
 使用Dnsmasq进行转发
 
 清理一下持久化缓存，勾选禁止Dnsmasq缓存DNS
+
+![alt text](./img/image-6.png)
 
 ## 插件-流媒体增强
 忽略
@@ -100,6 +108,11 @@ lan接口配置为br-lan
 - DOMAIN-SUFFIX,google.com,（代理组名） #匹配域名后缀，意为xxx.google.com走代理
 - DOMAIN-KEYWORD,google,DIRECT（代理组名） #匹配域名关键字，意为域名含有google的走DIRECT
 - DOMAIN,google.com,DIRECT（代理组名） #匹配域名，意为全域名匹配成功的走DIRECT
+
+![alt text](./img/image-7.png)
+
+## 插件-外部控制
+忽略
 
 ## 插件-IPV6设置
 取消勾选，不使用IPV6
@@ -146,6 +159,8 @@ geosite更新url:
 在adguard配置好后(参考new_adguardhome_config)
 
 下方nameserver输入127.0.0.1:5335  UDP
+
+![alt text](./img/image-8.png)
 
 ---
 
