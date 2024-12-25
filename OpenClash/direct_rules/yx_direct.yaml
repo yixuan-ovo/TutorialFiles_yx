@@ -1,6 +1,6 @@
 payload:
   - geosite:steam@cn,DIRECT
-  - gstore.val.manlaxy.com,DIRECT
+  - DOMAIN,gstore.val.manlaxy.com,DIRECT
   - DOMAIN-SUFFIX,yixr.fun
   - DOMAIN-SUFFIX,chatboxai.app
   - DOMAIN-SUFFIX,ingest.global-contribute.live-video.net
