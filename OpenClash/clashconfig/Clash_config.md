@@ -151,6 +151,8 @@ ipv4URL:
 ipv6URL:
 - https://raw.githubusercontent.com/mayaxcn/china-ip-list/master/chnroute_v6.txt
 
+**这俩跟默认没有区别**
+
 ![img_12.png](./img/img_12.png)
 
 ---
