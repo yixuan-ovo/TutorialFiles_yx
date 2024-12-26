@@ -122,15 +122,17 @@ lan接口配置为br-lan
 ## 插件-GEO数据库订阅
 可以使用默认链接
 
+GeoIP-MMDB:
+- https://github.com/Hackl0us/GeoIP2-CN/raw/release/Country.mmdb
+
+链接来源仓库:https://github.com/Hackl0us/GeoIP2-CN?tab=readme-ov-file
+
+GeoIP-Dat:
+- https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
+
+链接来源仓库:https://github.com/Loyalsoldier/v2ray-rules-dat
+
 **geoipDat老版本数据库，文件太大，不采用**
-
-geoip mmdb更新url:
-- https://raw.githubusercontent.com/Loyalsoldier/geoip/release/Country.mmdb
-- https://cdn.jsdelivr.net/gh/Loyalsoldier/geoip@release/Country.mmdb
-
-geosite更新url:
-- https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
-- https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat
 
 **每天或每周更新一次，设置完自定义URL后点击检查并更新进行更新，单纯点击保存配置没有用**
 
@@ -138,6 +140,16 @@ geosite更新url:
 
 ## 插件-大陆白名单订阅:
 勾选自动更新，其余默认即可
+
+可选其余URL:
+
+![alt text](./img/image-9.png)
+
+ipv4URL:
+- https://raw.githubusercontent.com/mayaxcn/china-ip-list/master/chnroute.txt
+
+ipv6URL:
+- https://raw.githubusercontent.com/mayaxcn/china-ip-list/master/chnroute_v6.txt
 
 ![img_12.png](./img/img_12.png)
 
