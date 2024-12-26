@@ -22,3 +22,4 @@ rules:
   - DOMAIN-SUFFIX,adblockplus.org,DIRECT
   - DOMAIN-SUFFIX,download.nvidia.com,DIRECT
   - DOMAIN-SUFFIX,gyg.si,DIRECT
+  - DOMAIN-SUFFIX,hxhelmet.com,DIRECT
