@@ -1,3 +1,14 @@
+# 2024.12.26:
+adgh适用整合版规则:
+- https://github.com/217heidai/adblockfilters
+
+ad扩展适用整合版规则:
+
+- https://github.com/8680/GOODBYEADS
+
+---
+---
+
 秋风规则
 - https://raw.githubusercontent.com/TG-Twilight/AWAvenue-Ads-Rule/main/AWAvenue-Ads-Rule.txt
 
