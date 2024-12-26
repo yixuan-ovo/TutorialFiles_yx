@@ -1,10 +1,23 @@
-payload:
+# payload:
+#   - geosite:steam@cn,DIRECT
+#   - DOMAIN,gstore.val.manlaxy.com,DIRECT
+#   - DOMAIN-SUFFIX,yixr.fun
+#   - DOMAIN-SUFFIX,chatboxai.app
+#   - DOMAIN-SUFFIX,ingest.global-contribute.live-video.net
+#   - DOMAIN-SUFFIX,immersivetranslate.com
+#   - DOMAIN-SUFFIX,adblockplus.org
+#   - DOMAIN-SUFFIX,download.nvidia.com
+#   - DOMAIN-SUFFIX,gyg.si
+
+rules:
+  # 直接连接 Steam（中国）
   - geosite:steam@cn,DIRECT
+  # 直接连接特定的域名
   - DOMAIN,gstore.val.manlaxy.com,DIRECT
-  - DOMAIN-SUFFIX,yixr.fun
-  - DOMAIN-SUFFIX,chatboxai.app
-  - DOMAIN-SUFFIX,ingest.global-contribute.live-video.net
-  - DOMAIN-SUFFIX,immersivetranslate.com
-  - DOMAIN-SUFFIX,adblockplus.org
-  - DOMAIN-SUFFIX,download.nvidia.com
-  - DOMAIN-SUFFIX,gyg.si
+  - DOMAIN-SUFFIX,yixr.fun,DIRECT
+  - DOMAIN-SUFFIX,chatboxai.app,DIRECT
+  - DOMAIN-SUFFIX,ingest.global-contribute.live-video.net,DIRECT
+  - DOMAIN-SUFFIX,immersivetranslate.com,DIRECT
+  - DOMAIN-SUFFIX,adblockplus.org,DIRECT
+  - DOMAIN-SUFFIX,download.nvidia.com,DIRECT
+  - DOMAIN-SUFFIX,gyg.si,DIRECT
