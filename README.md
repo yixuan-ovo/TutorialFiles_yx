@@ -47,4 +47,7 @@ subconverter
 
 的重写配置文件,之前旧版已归档
 
+## 增加mihomo在线覆写yaml文件
+放于mihomo文件夹下，方便修改
+
 # 待续...
