@@ -11,3 +11,4 @@ rewrite:
   - DOMAIN-SUFFIX,download.nvidia.com,DIRECT
   - DOMAIN-SUFFIX,gyg.si,DIRECT
   - DOMAIN-KEYWORD,hxhelmet,DIRECT
+  - DOMAIN-SUFFIX,oray.com,DIRECT
