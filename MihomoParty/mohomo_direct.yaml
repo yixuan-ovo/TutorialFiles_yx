@@ -12,3 +12,4 @@ rewrite:
   - DOMAIN-SUFFIX,gyg.si,DIRECT
   - DOMAIN-KEYWORD,hxhelmet,DIRECT
   - DOMAIN-SUFFIX,oray.com,DIRECT
+  - DOMAIN-SUFFIX,cloudflare.com,DIRECT
