@@ -14,3 +14,4 @@ rewrite:
   - DOMAIN-SUFFIX,oray.com,DIRECT
   - DOMAIN-SUFFIX,cloudflare.com,DIRECT
   - DOMAIN-SUFFIX,lanhuapp.com,DIRECT
+  - DOMAIN-SUFFIX,nelreports.net,REJECT
