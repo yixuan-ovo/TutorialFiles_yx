@@ -15,7 +15,7 @@ rules:
   - geosite:steam@cn,DIRECT
   # 直接连接特定的域名
   - DOMAIN,gstore.val.manlaxy.com,DIRECT
-  - DOMAIN-SUFFIX,yixr.fun,DIRECT
+  # - DOMAIN-SUFFIX,yixr.fun,DIRECT
   # - DOMAIN-SUFFIX,chatboxai.app,DIRECT
   - DOMAIN-SUFFIX,ingest.global-contribute.live-video.net,DIRECT
   - DOMAIN-SUFFIX,immersivetranslate.com,DIRECT
@@ -24,3 +24,4 @@ rules:
   - DOMAIN-SUFFIX,gyg.si,DIRECT
   - DOMAIN-KEYWORD,hxhelmet,DIRECT
   - DOMAIN-SUFFIX,oray.com,DIRECT
+  - DOMAIN-SUFFIX,ys7.com,DIRECT
