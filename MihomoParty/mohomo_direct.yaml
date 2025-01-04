@@ -1,3 +1,4 @@
+# 替代重写规则
 rewrite:
   # 直连所有游戏类网站域名规则
   - geosite:category-games@cn
@@ -5,6 +6,7 @@ rewrite:
   # 直连steam相关域名
   # - geosite:steam@cn,DIRECT
 
+# 附加规则
 +rules:
 # 域名被墙了
 #  - DOMAIN-SUFFIX,yixr.fun,DIRECT
