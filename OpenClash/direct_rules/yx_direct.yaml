@@ -10,13 +10,16 @@
 #   - DOMAIN-SUFFIX,gyg.si
 
 rules:
-  # 直接连接 Steam（中国）
-  #- geosite:category-games@cn
+# 直连所有游戏类网站域名规则 
+  # - geosite:category-games@cn
+
+# 直连steam相关域名
   - geosite:steam@cn,DIRECT
+
   # 直接连接特定的域名
   - DOMAIN,gstore.val.manlaxy.com,DIRECT
   # - DOMAIN-SUFFIX,yixr.fun,DIRECT
-  # - DOMAIN-SUFFIX,chatboxai.app,DIRECT
+  - DOMAIN-SUFFIX,chatboxai.app,DIRECT
   - DOMAIN-SUFFIX,ingest.global-contribute.live-video.net,DIRECT
   - DOMAIN-SUFFIX,immersivetranslate.com,DIRECT
   - DOMAIN-SUFFIX,adblockplus.org,DIRECT
@@ -24,4 +27,6 @@ rules:
   - DOMAIN-SUFFIX,gyg.si,DIRECT
   - DOMAIN-KEYWORD,hxhelmet,DIRECT
   - DOMAIN-SUFFIX,oray.com,DIRECT
+  - DOMAIN-SUFFIX,ys7.com,DIRECT
+  - DOMAIN-SUFFIX,nelreports.net,REJECT
   - DOMAIN-SUFFIX,ys7.com,DIRECT
