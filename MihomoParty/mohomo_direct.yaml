@@ -24,3 +24,4 @@ rewrite:
   - DOMAIN-SUFFIX,ys7.com,DIRECT
   - DOMAIN-SUFFIX,xitongzhijia.net,DIRECT
   - DOMAIN-SUFFIX,sdkjjt.com,DIRECT
+  - DOMAIN-SUFFIX,pcmoe.net,DIRECT
