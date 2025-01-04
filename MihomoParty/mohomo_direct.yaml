@@ -20,3 +20,4 @@ rewrite:
   - DOMAIN-SUFFIX,lanhuapp.com,DIRECT
   - DOMAIN-SUFFIX,nelreports.net,REJECT
   - DOMAIN-SUFFIX,ys7.com,DIRECT
+  - DOMAIN-SUFFIX,xitongzhijia.net,DIRECT
