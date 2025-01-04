@@ -13,18 +13,14 @@
     https://mirrors.cernet.edu.cn/immortalwrt
 
 ## 常用软件包名:
-
-luci-theme-argon    **argon主题**
-
-
-luci-app-adguardhome    **最新版cn语言包bug解决见adhome_config**
-
-~~建议下载20221023，自带中文。最新版安装英文后再安装中文好像有冲突~~
-
-*~~luci-app-arpbind			IP/MAC地址绑定~~*
-自带,不用搞这个
-
-luci-app-openclash
+|包名|备注|
+|-|-|
+|luci-theme-argon|**argon主题**|
+|luci-app-adguardhome|**最新版cn语言包bug解决见adhome_config**|
+||~~建议下载20221023，自带中文。最新版安装英文后再安装中文好像有冲突~~|
+|*~~luci-app-arpbind~~*|*~~IP/MAC地址绑定~~*|
+||自带,不用搞这个|
+|luci-app-openclash||
 
 ---
 
