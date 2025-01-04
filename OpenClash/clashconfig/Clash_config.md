@@ -13,16 +13,18 @@
     https://mirrors.cernet.edu.cn/immortalwrt
 
 ## 常用软件包名:
-luci-theme-argon			argon主题
 
-luci-app-adguardhome
+luci-theme-argon    **argon主题**
+
+
+luci-app-adguardhome    **最新版cn语言包bug解决见adhome_config**
 
 ~~建议下载20221023，自带中文。最新版安装英文后再安装中文好像有冲突~~
 
 *~~luci-app-arpbind			IP/MAC地址绑定~~*
 自带,不用搞这个
 
-luci-app-openclash			不解释
+luci-app-openclash
 
 ---
 
@@ -99,6 +101,7 @@ lan接口配置为br-lan
 - SRC-IP-CIDR,192.168.7.233/32,节点分组名	
 
 （意为7.233ip设备走指定节点分组。例如:- SRC-IP-CIDR,192.168.7.233/32,🚀 手动切换
+
 经测试发现黑白名单和自定义规则都可以实现不走代理
 
 区别在于黑白名单只能定义ip
