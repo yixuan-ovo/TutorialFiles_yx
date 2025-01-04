@@ -205,7 +205,7 @@ ipv6URL:
 # openclash配置订阅
 **漏网之鱼不能选全球直连！选择直连会泄露DNS。此时在绕过大陆ip选项的作用下，国内ip不会走clash内核**
 
-测试dns泄露网址:https://ipleak.net/
+测试dns泄露网址:https://browserleaks.com/dns
 
 
 # 勾选自动更新，修改配置文件:
