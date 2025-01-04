@@ -1,6 +1,9 @@
 rewrite:
+  # 直连所有游戏类网站域名规则
   - geosite:category-games@cn
   - gstore.val.manlaxy.com,DIRECT
+  # 直连steam相关域名
+  # - geosite:steam@cn,DIRECT
 
 +rules:
 # 域名被墙了
