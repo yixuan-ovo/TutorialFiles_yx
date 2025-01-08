@@ -1,2 +1,3 @@
 rules:
   - DOMAIN-KEYWORD,hypsu,DIRECT
+  - DOMAIN-SUFFIX,chatboxai.app,DIRECT
