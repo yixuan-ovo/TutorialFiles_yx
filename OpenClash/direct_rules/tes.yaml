@@ -1,2 +1,2 @@
 rules:
-  - DOMAIN,hypsu.asia,DIRECT
+  - DOMAIN-SUFFIX,hypsu.asia,DIRECT
