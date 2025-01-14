@@ -36,3 +36,4 @@ rules:
   - DOMAIN-SUFFIX,qudou100.com,DIRECT
   - DOMAIN-SUFFIX,papegames.com,DIRECT
   - DOMAIN-SUFFIX,haowallpaper.com,DIRECT
+  - DOMAIN-SUFFIX,hanzijs.com,DIRECT
