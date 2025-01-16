@@ -50,4 +50,7 @@ subconverter
 ## 增加mihomo在线覆写yaml文件
 放于mihomo文件夹下，方便修改
 
+## mihomo使用中无法访问微软商店问题:
+***打开UWP工具勾选Microsoft Store相关内容即可***
+
 # 待续...
