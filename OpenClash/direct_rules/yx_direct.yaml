@@ -38,3 +38,6 @@ rules:
   - DOMAIN-SUFFIX,haowallpaper.com,DIRECT
   - DOMAIN-SUFFIX,hanzijs.com,DIRECT
   - DOMAIN-SUFFIX,bathome.net,DIRECT
+  - DOMAIN-SUFFIX,ali213.net,DIRECT
+  - DOMAIN-SUFFIX,22biqu.com,DIRECT
+  - DOMAIN-KEYWORD,weixin,DIRECT
