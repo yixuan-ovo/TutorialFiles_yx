@@ -52,5 +52,6 @@ subconverter
 
 ## mihomo使用中无法访问微软商店问题:
 ***打开UWP工具勾选Microsoft Store相关内容即可***
+***打开UWP工具勾选XBOX相关内容即可***
 
 # 待续...
