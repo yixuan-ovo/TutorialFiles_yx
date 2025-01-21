@@ -41,3 +41,15 @@ rules:
   - DOMAIN-SUFFIX,ali213.net,DIRECT
   - DOMAIN-SUFFIX,22biqu.com,DIRECT
   - DOMAIN-KEYWORD,weixin,DIRECT
+  - DOMAIN-SUFFIX,jb51.net,DIRECT
+  - DOMAIN-SUFFIX,duote.com,DIRECT
+  - DOMAIN-SUFFIX,gamersky.com,DIRECT
+  - DOMAIN-SUFFIX,gamer520.com,DIRECT
+  - DOMAIN-SUFFIX,lanzouc.com,DIRECT
+  - DOMAIN-SUFFIX,lanzouj.com,DIRECT
+  - DOMAIN-SUFFIX,dmpdmp.com,DIRECT
+  - DOMAIN-SUFFIX,caimogu.cc,DIRECT
+  - DOMAIN-SUFFIX,steampy.com,DIRECT
+  - DOMAIN-SUFFIX,juij.fun,DIRECT
+  - DOMAIN-SUFFIX,cmbchina.com,DIRECT
+  - DOMAIN-SUFFIX,zdxt.net,DIRECT
