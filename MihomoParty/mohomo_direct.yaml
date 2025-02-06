@@ -45,3 +45,6 @@ rewrite:
   - DOMAIN-SUFFIX,juij.fun,DIRECT
   - DOMAIN-SUFFIX,cmbchina.com,DIRECT
   - DOMAIN-SUFFIX,zdxt.net,DIRECT
+  - DOMAIN-SUFFIX,allhistory.com,DIRECT
+  - DOMAIN-SUFFIX,niaowoclub.com,DIRECT
+  - DOMAIN-SUFFIX,znds.com,DIRECT
