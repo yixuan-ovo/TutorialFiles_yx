@@ -56,3 +56,4 @@ rules:
   - DOMAIN-SUFFIX,allhistory.com,DIRECT
   - DOMAIN-SUFFIX,niaowoclub.com,DIRECT
   - DOMAIN-SUFFIX,znds.com,DIRECT
+  - DOMAIN-SUFFIX,zhuiyingmao6.com,DIRECT
