@@ -55,4 +55,10 @@ subconverter
 
 ***XBOX相关内容同理***
 
+## 增加IOS SSR规则链接
+-   https://johnshall.github.io/Shadowrocket-ADBlock-Rules-Forever/
+
+github地址:
+-   https://github.com/GMOogway/shadowrocket-rules
+
 # 待续...
