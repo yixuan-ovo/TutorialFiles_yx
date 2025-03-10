@@ -49,3 +49,5 @@ rewrite:
   - DOMAIN-SUFFIX,niaowoclub.com,DIRECT
   - DOMAIN-SUFFIX,znds.com,DIRECT
   - DOMAIN-SUFFIX,zhuiyingmao6.com,DIRECT
+  - DOMAIN-SUFFIX,yuque.com,DIRECT
+  - DOMAIN-SUFFIX,it120.cc,DIRECT
