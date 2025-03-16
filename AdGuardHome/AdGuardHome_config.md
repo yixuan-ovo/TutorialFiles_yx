@@ -1,3 +1,19 @@
+## adgh安装目录需要定期清理的文件
+-   /usr/bin/AdGuardHome/data/filters/
+-   /usr/bin/AdGuardHome/data/
+
+以上两个路径下存在
+
+.json.1文件:历史日志文件,占用空间大
+
+定期删除脚本:
+
+-   50 5 */5 * * [ -f /usr/bin/AdGuardHome/data/querylog.json.1 ] && rm /usr/bin/AdGuardHome/data/querylog.json.1
+
+txt.old文件:历史规则文件,占用空间大
+
+需要定期删除
+
 ## adgh安装中文有一个小bug
 luci-i18n-adguardhome-zh-cn_git-22.323.68542-450e04a_all.ipk
 
