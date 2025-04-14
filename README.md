@@ -61,4 +61,6 @@ subconverter
 github地址:
 -   https://github.com/GMOogway/shadowrocket-rules
 
+## 增加最新版ini
+
 # 待续...
