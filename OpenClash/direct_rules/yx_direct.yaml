@@ -60,3 +60,4 @@ rules:
   - DOMAIN-SUFFIX,yuque.com,DIRECT
   - DOMAIN-SUFFIX,it120.cc,DIRECT
   - DOMAIN-SUFFIX,deepseek.com,DIRECT
+  - DOMAIN-SUFFIX,stun.playstation.net,DIRECT
