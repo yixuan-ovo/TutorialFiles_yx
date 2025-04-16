@@ -2,6 +2,16 @@
 
 ## 2025.4.16
 
+    ruleset=🚀 强制代理,https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Proxy.list,28800
+
+发现这一条里面有ps5nat类型测试
+
+![](./img/image_stun.png)
+
+指定走节点试一下
+
+反馈:
+
 ## 2025.4.15-下
 
 发现只要关闭openclash,就remote就可以直接连上了
