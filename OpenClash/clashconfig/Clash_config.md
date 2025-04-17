@@ -1,5 +1,9 @@
 # 更新
 
+## 2025.4.17
+
+规则也不行,现在怀疑是开了绕过大陆,导致两边返回的信息不一样,可以尝试一下
+
 ## 2025.4.16
 
     ruleset=🚀 强制代理,https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/main/rule/Custom_Proxy.list,28800
@@ -10,7 +14,7 @@
 
 指定走节点试一下
 
-    反馈:不行,试一下另外那个老哥的规则,如果还是不行那就是节点问题了
+    反馈:不行,试一下另外那个规则,如果还是不行那就是节点问题了
 
 ## 2025.4.15-下
 
