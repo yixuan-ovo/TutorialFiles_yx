@@ -60,3 +60,5 @@ rules:
   - DOMAIN-SUFFIX,yuque.com,DIRECT
   - DOMAIN-SUFFIX,it120.cc,DIRECT
   - DOMAIN-SUFFIX,deepseek.com,DIRECT
+  - DOMAIN-SUFFIX,hxcard.top,DIRECT
+  - DOMAIN-SUFFIX,cn-north-1.jdcloud-oss.com,DIRECT
