@@ -1,8 +1,14 @@
-11.12更新：
+## 2025.5.20 更新：
+<font size=3>**_twittch推流地址可能有变化，现在改成下图这个才能抓到推流_**</font>
+![img.png](./img/123.png)
+
+-       address=/.contribute.live-video.net/192.168.7.101
+
+## 2024.11.12更新：
 
 在[这里](#2上方步骤结束并且出现一条推流信息后)增加完成截图
 
-——————————————*************——————————————
+---
 
 ## <font color=#FA8072>前置条件：_会用docker，有梯子，会开局域网共享连接，有twitch账号，有ps5，_</font>
 <font size=3>ps5绑定twitch账号方法请自行百度：）</font>
@@ -92,7 +98,7 @@ USER和PASS是账号密码，自定义后记得保存
 
 ![img_4.png](./img/img_4.png)
 
-点击8080进入网页端，输入上方命令设置的账号密码登录进去，替换下方说的两项，其余不用动
+点击8080进入网页端，输入上方命令设置的账号密码登录进去，替换下方标注的两项，其余不用动
 
 ![img_5.png](./img/img_5.png)
 
@@ -104,11 +110,11 @@ USER和PASS是账号密码，自定义后记得保存
 
 <font size=2>**_address的" / "后地址为开着docker的电脑ip，cmd-ipconfig查询ipv4地址即可_**</font>
 
--     address=/ingest.global-contribute.live-video.net/192.168.7.101
+~~address=/ingest.global-contribute.live-video.net/192.168.7.101~~
 
-如下图所示
+参考[2025.5.20](#2025520-更新)更新
 
-![img_6.png](./img/img_6.png)
+~~如下图所示~~
 
 配置好后点击左侧重启即可，此时[bao3网页端](#4重启后点击789080)应该会显示一条推流信息
 
