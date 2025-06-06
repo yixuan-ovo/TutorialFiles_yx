@@ -1,3 +1,8 @@
+## 2025.6.6:
+geoip和geosite链接:
+- https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
+- https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
+
 ## 2024.12.20更新:
 完善覆写规则
 ```
