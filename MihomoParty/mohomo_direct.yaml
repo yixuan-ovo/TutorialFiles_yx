@@ -1,10 +1,7 @@
 # 替代重写规则
 rewrite:
   # 直连所有游戏类网站域名规则
-  - geosite:category-games@cn
   - gstore.val.manlaxy.com,DIRECT
-  # 直连steam相关域名
-  # - geosite:steam@cn,DIRECT
 
 # 附加规则
 +rules:
@@ -54,3 +51,9 @@ rewrite:
   - DOMAIN-SUFFIX,deepseek.com,DIRECT
   - DOMAIN-SUFFIX,hxcard.top,DIRECT
   - DOMAIN-SUFFIX,cn-north-1.jdcloud-oss.com,DIRECT
+  - DOMAIN-SUFFIX,bejson.com,DIRECT
+  - DOMAIN-SUFFIX,emojiall.com,DIRECT
+  - DOMAIN-SUFFIX,onlineconvertfree.com,DIRECT
+  - DOMAIN-SUFFIX,ttsmaker.com,DIRECT
+  - DOMAIN-SUFFIX,qinight.com,🚀 强制代理
+  - DOMAIN-SUFFIX,v2fy.com,🚀 强制代理

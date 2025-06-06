@@ -1,23 +1,8 @@
-# payload:
-#   - geosite:steam@cn,DIRECT
-#   - DOMAIN,gstore.val.manlaxy.com,DIRECT
-#   - DOMAIN-SUFFIX,yixr.fun
-#   - DOMAIN-SUFFIX,chatboxai.app
-#   - DOMAIN-SUFFIX,ingest.global-contribute.live-video.net
-#   - DOMAIN-SUFFIX,immersivetranslate.com
-#   - DOMAIN-SUFFIX,adblockplus.org
-#   - DOMAIN-SUFFIX,download.nvidia.com
-#   - DOMAIN-SUFFIX,gyg.si
 
 rules:
-# 直连所有游戏类网站域名规则 
-  # - geosite:category-games@cn
-
-# 直连steam相关域名
-  - geosite:steam@cn,DIRECT
-
   # 直接连接特定的域名
   - DOMAIN,gstore.val.manlaxy.com,DIRECT
+
   # - DOMAIN-SUFFIX,yixr.fun,DIRECT
   - DOMAIN-SUFFIX,chatboxai.app,DIRECT
   - DOMAIN-SUFFIX,ingest.global-contribute.live-video.net,DIRECT
@@ -62,3 +47,9 @@ rules:
   - DOMAIN-SUFFIX,deepseek.com,DIRECT
   - DOMAIN-SUFFIX,hxcard.top,DIRECT
   - DOMAIN-SUFFIX,cn-north-1.jdcloud-oss.com,DIRECT
+  - DOMAIN-SUFFIX,bejson.com,DIRECT
+  - DOMAIN-SUFFIX,emojiall.com,DIRECT
+  - DOMAIN-SUFFIX,onlineconvertfree.com,DIRECT
+  - DOMAIN-SUFFIX,ttsmaker.com,DIRECT
+  - DOMAIN-SUFFIX,qinight.com,🚀 强制代理
+  - DOMAIN-SUFFIX,v2fy.com,🚀 强制代理
