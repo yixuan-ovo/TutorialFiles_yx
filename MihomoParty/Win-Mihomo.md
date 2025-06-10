@@ -1,3 +1,17 @@
+## 2025.6.10:
+mihomo内核启动失败显示geosite.dat没找到条目问题
+,存在点击更新外部资源但是只显示成功不更新文件的BUG
+
+需要手动将软件安装目录下resources-files内的下面四个文件下载替换
+
+    ASN.mmdb,geoip.dat,geoip.metadb,geosite.dat
+
+以及如果为默认路径安装,需要将下方路径test文件夹内的上面四个文件也手动替换更新一下
+
+    C:\Users\yixr\AppData\Roaming\mihomo-party\test
+
+如果为手动选择路径,test文件夹应该在软件安装目录下
+
 ## 2025.6.6:
 geoip和geosite链接:
 - https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
