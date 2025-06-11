@@ -21,7 +21,7 @@ dns:
   proxy-server-nameserver:
     - 223.5.5.5
   direct-nameserver:
-    - 223.5.5.5
+    - 219.147.1.66
   nameserver-policy: {}
   respect-rules: false
 ```
