@@ -1,3 +1,31 @@
+## 2025.6.11:
+```
+dns:
+  enable: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - "*"
+    - +.lan
+    - +.local
+    - time.*.com
+    - ntp.*.com
+    - +.market.xiaomi.com
+  use-hosts: false
+  use-system-hosts: false
+  default-nameserver:
+    - 223.5.5.5
+  nameserver:
+    - 223.5.5.5
+  proxy-server-nameserver:
+    - 223.5.5.5
+  direct-nameserver:
+    - 223.5.5.5
+  nameserver-policy: {}
+  respect-rules: false
+```
+
 ## 2025.6.10:
 mihomo内核启动失败显示geosite.dat没找到条目问题
 ,存在点击更新外部资源但是只显示成功不更新文件的BUG
