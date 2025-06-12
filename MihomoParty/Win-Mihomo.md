@@ -15,11 +15,10 @@ dns:
   use-hosts: false
   use-system-hosts: false
   default-nameserver:
-    - 223.5.5.5
+    - 219.147.1.66
   nameserver:
-    - 223.5.5.5
-  proxy-server-nameserver:
-    - 223.5.5.5
+    - https://dns.alidns.com/dns-query
+  proxy-server-nameserver: []
   direct-nameserver:
     - 219.147.1.66
   nameserver-policy: {}
