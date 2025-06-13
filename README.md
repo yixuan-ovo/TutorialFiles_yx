@@ -16,7 +16,7 @@ star一个dns测速新工具
 
 ---
 
-## 开坑写Mihimo使用过程
+## 开坑写~~Mihimo~~/Sparkle使用过程
 <font size=4>2024.11.20 施工完成!</font>
 
 ---
@@ -47,10 +47,10 @@ subconverter
 
 的重写配置文件,之前旧版已归档
 
-## 增加mihomo在线覆写yaml文件
-放于mihomo文件夹下，方便修改
+## 增加~~Mihimo~~/Sparkle在线覆写yaml文件
+放于~~Mihimo~~/Sparkle文件夹下，方便修改
 
-## mihomo使用中无法访问微软商店问题:
+## ~~Mihimo~~/Sparkle使用中无法访问微软商店问题:
 ***打开UWP工具勾选Microsoft Store相关内容即可***
 
 ***XBOX相关内容同理***
