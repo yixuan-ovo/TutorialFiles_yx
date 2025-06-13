@@ -53,3 +53,18 @@ rules:
   - DOMAIN-SUFFIX,ttsmaker.com,DIRECT
   - DOMAIN-SUFFIX,qinight.com,🚀 强制代理
   - DOMAIN-SUFFIX,v2fy.com,🚀 强制代理
+  - DOMAIN-SUFFIX,yandex.com,🚀 强制代理
+  - DOMAIN-SUFFIX,builtwith.com,DIRECT
+  - DOMAIN-SUFFIX,linkz.ai,DIRECT
+  
+# 天气API
+  - DOMAIN-SUFFIX,open-meteo.com,DIRECT
+# 证书
+  - DOMAIN-SUFFIX,lencr.org,🚀 强制代理
+
+  - DOMAIN-KEYWORD,yandex,DIRECT
+  - DOMAIN-KEYWORD,yastatic,DIRECT
+  - DOMAIN-SUFFIX,windisco.com,DIRECT
+  - DOMAIN-SUFFIX,18comic.vip,🚀 强制代理
+  - DOMAIN-SUFFIX,h233.eu.org,🚀 强制代理
+  - DOMAIN-SUFFIX,deqixs.com,DIRECT
