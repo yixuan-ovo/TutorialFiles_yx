@@ -1,3 +1,8 @@
+## 2025.6.13:
+修改为Sparkle,mihomo暂时弃用,其余配置项相同,不再更改
+
+---
+
 ## 2025.6.11:
 ```
 dns:
@@ -24,6 +29,7 @@ dns:
   nameserver-policy: {}
   respect-rules: false
 ```
+---
 
 ## 2025.6.10:
 mihomo内核启动失败显示geosite.dat没找到条目问题
@@ -39,31 +45,32 @@ mihomo内核启动失败显示geosite.dat没找到条目问题
 
 如果为手动选择路径,test文件夹应该在软件安装目录下
 
+---
+
 ## 2025.6.6:
 geoip和geosite链接:
 - https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
 - https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
 
+---
+
 ## 2024.12.20更新:
 完善覆写规则
 ```
 rewrite:
-  - geosite:steam@cn,DIRECT
   - gstore.val.manlaxy.com,DIRECT
 
 +rules:
   - DOMAIN-SUFFIX,yixr.fun,DIRECT
-  - DOMAIN-SUFFIX,chatboxai.app,DIRECT
-  - DOMAIN-SUFFIX,ingest.global-contribute.live-video.net,DIRECT
-  - DOMAIN-SUFFIX,immersivetranslate.com,DIRECT
-  - DOMAIN-SUFFIX,adblockplus.org,DIRECT
-  - DOMAIN-SUFFIX,download.nvidia.com,DIRECT
-  - DOMAIN-SUFFIX,gyg.si,DIRECT
 ```
+
+---
 
 ## 2024.12.16更新:
 新增一条漏网之鱼steam下载规则:
 ![alt text](./img/10.jpg)
+
+---
 
 ## 2024.12.12更新:
 新增steam规则:除下载外其余steam流量都走代理,steam代理组选择代理
@@ -80,23 +87,24 @@ rewrite:
 
 表现为下载游戏时连接内看不到下载的速度,应该是走了geosite:cn
 
+---
+
 ## 2024.12.2更新:
 需要找一下设置mihomoparty的dns解析为当前网络连接的dns的办法,不然需要每次手动改
 
 ---
 
 # 软件地址
--       https://github.com/mihomo-party-org/mihomo-party
+-       https://github.com/xishang0128/sparkle
 
 # 首次启动
-可能需要以管理员身份运行，视情况而定
+需要以管理员身份运行，视情况而定
 
 初次打开会有一个引导，建议看完
 
 # 主界面
 ![alt text](./img/1.png)
 
-![alt text](./img/7.png)
 ### 选择规则即可
 
 ### **使用之前需要关掉之前的代理**
@@ -106,21 +114,15 @@ rewrite:
 日常使用只需要开启系统代理即可，当你知道自己需要虚拟网卡(TUA模式)时才需要开启该功能
 
 ## 空白订阅
-![alt text](./img/2.png)
-
-该位置粘贴进订阅地址即可(需要复制clash或者通用订阅,其余订阅需要进行转换),支持模板自定义订阅转换,参考[这里](https://raw.githubusercontent.com/yixuan-ovo/ImmortalWrt-Files/refs/heads/main/OpenClash/openclash-tutorials/%E4%B8%80%E4%B8%AA%E9%93%BE%E6%8E%A5%E5%90%8C%E6%97%B6%E5%AE%9E%E7%8E%B0%E9%85%8D%E7%BD%AE%E6%A8%A1%E6%9D%BF%E5%92%8C%E5%90%8E%E7%AB%AF%E8%AE%A2%E9%98%85%E8%BD%AC%E6%8D%A2.md)
+粘贴订阅地址即可(需要复制clash或者通用订阅,其余订阅需要进行转换),支持模板自定义订阅转换,参考[这里](https://raw.githubusercontent.com/yixuan-ovo/ImmortalWrt-Files/refs/heads/main/OpenClash/openclash-tutorials/%E4%B8%80%E4%B8%AA%E9%93%BE%E6%8E%A5%E5%90%8C%E6%97%B6%E5%AE%9E%E7%8E%B0%E9%85%8D%E7%BD%AE%E6%A8%A1%E6%9D%BF%E5%92%8C%E5%90%8E%E7%AB%AF%E8%AE%A2%E9%98%85%E8%BD%AC%E6%8D%A2.md)
 
 **如果你的订阅链接需要代理才可以更新**
 
-![alt text](./img/3.png) 选中这里即可
+![alt text](./img/3.png) 选中
 
 **前提已经添加另一个不需要代理就可以更新的订阅,普遍情况是直接复制自己的订阅链接先导入**
 
-订阅完成后在
-
 ![alt text](./img/4.png)
-
-可以看到自己的订阅链接及规则
 
 ## 外部资源
 ![alt text](./img/5.png)
@@ -172,7 +174,11 @@ rewrite:
 RTT时延:往返时延,即从发送方发送数据开始,到发送方接收到来自接收方的确认消息所经过的时间.网络拥堵情况下会出现RTT时延的波动.
 
 ## DNS/域名嗅探
-建议默认,dns可以[在这里](https://github.com/Kukaina/DnsTools)选择延迟低的进行更改
+建议参考更新的写法,nameserver及direct-nameserver采用运营商延迟低的,可以[在这里](https://github.com/Kukaina/DnsTools)测试延迟
+
+默认解析服务器可以使用阿里云
+
+    https://dns.alidns.com/dns-query
 
 # 系统设置
 

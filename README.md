@@ -67,4 +67,6 @@ github地址:
 
 ## 增加使用去广告插件的记录
 
+## 增加kodi配置过程,修改mihomo为sparkle
+
 # 待续...
