@@ -1,7 +1,6 @@
 rules:
   - DOMAIN-SUFFIX,qinight.com
   - DOMAIN-SUFFIX,v2fy.com
-  - DOMAIN-SUFFIX,yandex.com
 # 证书
   - DOMAIN-SUFFIX,lencr.org
 
