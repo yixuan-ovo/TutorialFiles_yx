@@ -1,70 +1,61 @@
-
 rules:
   # 直接连接特定的域名
-  - DOMAIN,gstore.val.manlaxy.com,DIRECT
+  - DOMAIN,gstore.val.manlaxy.com
 
-  # - DOMAIN-SUFFIX,yixr.fun,DIRECT
-  - DOMAIN-SUFFIX,chatboxai.app,DIRECT
-  - DOMAIN-SUFFIX,ingest.global-contribute.live-video.net,DIRECT
-  - DOMAIN-SUFFIX,immersivetranslate.com,DIRECT
-  - DOMAIN-SUFFIX,adblockplus.org,DIRECT
-  - DOMAIN-SUFFIX,download.nvidia.com,DIRECT
-  - DOMAIN-SUFFIX,gyg.si,DIRECT
-  - DOMAIN-KEYWORD,hxhelmet,DIRECT
-  - DOMAIN-SUFFIX,oray.com,DIRECT
-  - DOMAIN-SUFFIX,ys7.com,DIRECT
-  - DOMAIN-SUFFIX,nelreports.net,REJECT
-  - DOMAIN-SUFFIX,ys7.com,DIRECT
-  - DOMAIN-SUFFIX,xitongzhijia.net,DIRECT
-  - DOMAIN-SUFFIX,sdkjjt.com,DIRECT
-  - DOMAIN-SUFFIX,pcmoe.net,DIRECT
-  - DOMAIN-SUFFIX,qudou100.com,DIRECT
-  - DOMAIN-SUFFIX,papegames.com,DIRECT
-  - DOMAIN-SUFFIX,haowallpaper.com,DIRECT
-  - DOMAIN-SUFFIX,hanzijs.com,DIRECT
-  - DOMAIN-SUFFIX,bathome.net,DIRECT
-  - DOMAIN-SUFFIX,ali213.net,DIRECT
-  - DOMAIN-SUFFIX,22biqu.com,DIRECT
-  - DOMAIN-KEYWORD,weixin,DIRECT
-  - DOMAIN-SUFFIX,jb51.net,DIRECT
-  - DOMAIN-SUFFIX,duote.com,DIRECT
-  - DOMAIN-SUFFIX,gamersky.com,DIRECT
-  - DOMAIN-SUFFIX,gamer520.com,DIRECT
-  - DOMAIN-SUFFIX,lanzouc.com,DIRECT
-  - DOMAIN-SUFFIX,lanzouj.com,DIRECT
-  - DOMAIN-SUFFIX,dmpdmp.com,DIRECT
-  - DOMAIN-SUFFIX,caimogu.cc,DIRECT
-  - DOMAIN-SUFFIX,steampy.com,DIRECT
-  - DOMAIN-SUFFIX,juij.fun,DIRECT
-  - DOMAIN-SUFFIX,cmbchina.com,DIRECT
-  - DOMAIN-SUFFIX,zdxt.net,DIRECT
-  - DOMAIN-SUFFIX,allhistory.com,DIRECT
-  - DOMAIN-SUFFIX,niaowoclub.com,DIRECT
-  - DOMAIN-SUFFIX,znds.com,DIRECT
-  - DOMAIN-SUFFIX,zhuiyingmao6.com,DIRECT
-  - DOMAIN-SUFFIX,yuque.com,DIRECT
-  - DOMAIN-SUFFIX,it120.cc,DIRECT
-  - DOMAIN-SUFFIX,deepseek.com,DIRECT
-  - DOMAIN-SUFFIX,hxcard.top,DIRECT
-  - DOMAIN-SUFFIX,cn-north-1.jdcloud-oss.com,DIRECT
-  - DOMAIN-SUFFIX,bejson.com,DIRECT
-  - DOMAIN-SUFFIX,emojiall.com,DIRECT
-  - DOMAIN-SUFFIX,onlineconvertfree.com,DIRECT
-  - DOMAIN-SUFFIX,ttsmaker.com,DIRECT
-  - DOMAIN-SUFFIX,qinight.com,🚀 强制代理
-  - DOMAIN-SUFFIX,v2fy.com,🚀 强制代理
-  - DOMAIN-SUFFIX,yandex.com,🚀 强制代理
-  - DOMAIN-SUFFIX,builtwith.com,DIRECT
-  - DOMAIN-SUFFIX,linkz.ai,DIRECT
+  # - DOMAIN-SUFFIX,yixr.fun
+  - DOMAIN-SUFFIX,chatboxai.app
+  - DOMAIN-SUFFIX,ingest.global-contribute.live-video.net
+  - DOMAIN-SUFFIX,immersivetranslate.com
+  - DOMAIN-SUFFIX,adblockplus.org
+  - DOMAIN-SUFFIX,download.nvidia.com
+  - DOMAIN-SUFFIX,gyg.si
+  - DOMAIN-KEYWORD,hxhelmet
+  - DOMAIN-SUFFIX,oray.com
+  - DOMAIN-SUFFIX,ys7.com
+  - DOMAIN-SUFFIX,ys7.com
+  - DOMAIN-SUFFIX,xitongzhijia.net
+  - DOMAIN-SUFFIX,sdkjjt.com
+  - DOMAIN-SUFFIX,pcmoe.net
+  - DOMAIN-SUFFIX,qudou100.com
+  - DOMAIN-SUFFIX,papegames.com
+  - DOMAIN-SUFFIX,haowallpaper.com
+  - DOMAIN-SUFFIX,hanzijs.com
+  - DOMAIN-SUFFIX,bathome.net
+  - DOMAIN-SUFFIX,ali213.net
+  - DOMAIN-SUFFIX,22biqu.com
+  - DOMAIN-KEYWORD,weixin
+  - DOMAIN-SUFFIX,jb51.net
+  - DOMAIN-SUFFIX,duote.com
+  - DOMAIN-SUFFIX,gamersky.com
+  - DOMAIN-SUFFIX,gamer520.com
+  - DOMAIN-SUFFIX,lanzouc.com
+  - DOMAIN-SUFFIX,lanzouj.com
+  - DOMAIN-SUFFIX,dmpdmp.com
+  - DOMAIN-SUFFIX,caimogu.cc
+  - DOMAIN-SUFFIX,steampy.com
+  - DOMAIN-SUFFIX,juij.fun
+  - DOMAIN-SUFFIX,cmbchina.com
+  - DOMAIN-SUFFIX,zdxt.net
+  - DOMAIN-SUFFIX,allhistory.com
+  - DOMAIN-SUFFIX,niaowoclub.com
+  - DOMAIN-SUFFIX,znds.com
+  - DOMAIN-SUFFIX,zhuiyingmao6.com
+  - DOMAIN-SUFFIX,yuque.com
+  - DOMAIN-SUFFIX,it120.cc
+  - DOMAIN-SUFFIX,deepseek.com
+  - DOMAIN-SUFFIX,hxcard.top
+  - DOMAIN-SUFFIX,cn-north-1.jdcloud-oss.com
+  - DOMAIN-SUFFIX,bejson.com
+  - DOMAIN-SUFFIX,emojiall.com
+  - DOMAIN-SUFFIX,onlineconvertfree.com
+  - DOMAIN-SUFFIX,ttsmaker.com
+  - DOMAIN-SUFFIX,builtwith.com
+  - DOMAIN-SUFFIX,linkz.ai
   
 # 天气API
-  - DOMAIN-SUFFIX,open-meteo.com,DIRECT
-# 证书
-  - DOMAIN-SUFFIX,lencr.org,🚀 强制代理
+  - DOMAIN-SUFFIX,open-meteo.com
 
-  - DOMAIN-KEYWORD,yandex,DIRECT
-  - DOMAIN-KEYWORD,yastatic,DIRECT
-  - DOMAIN-SUFFIX,windisco.com,DIRECT
-  - DOMAIN-SUFFIX,18comic.vip,🚀 强制代理
-  - DOMAIN-SUFFIX,h233.eu.org,🚀 强制代理
-  - DOMAIN-SUFFIX,deqixs.com,DIRECT
+  - DOMAIN-KEYWORD,yandex
+  - DOMAIN-KEYWORD,yastatic
+  - DOMAIN-SUFFIX,windisco.com
+  - DOMAIN-SUFFIX,deqixs.com

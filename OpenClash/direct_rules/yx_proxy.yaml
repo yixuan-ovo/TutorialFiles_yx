@@ -1,0 +1,9 @@
+rules:
+  - DOMAIN-SUFFIX,qinight.com
+  - DOMAIN-SUFFIX,v2fy.com
+  - DOMAIN-SUFFIX,yandex.com
+# 证书
+  - DOMAIN-SUFFIX,lencr.org
+
+  - DOMAIN-SUFFIX,18comic.vip
+  - DOMAIN-SUFFIX,h233.eu.org
