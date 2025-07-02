@@ -59,3 +59,5 @@ rules:
   - DOMAIN-KEYWORD,yastatic
   - DOMAIN-SUFFIX,windisco.com
   - DOMAIN-SUFFIX,deqixs.com
+  - DOMAIN-SUFFIX,bootgraph.com
+  - DOMAIN-SUFFIX,cy227.com
