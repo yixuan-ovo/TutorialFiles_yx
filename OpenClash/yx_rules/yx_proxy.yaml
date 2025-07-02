@@ -7,3 +7,5 @@ rules:
   - DOMAIN-SUFFIX,18comic.vip
   - DOMAIN-SUFFIX,h233.eu.org
   - DOMAIN-SUFFIX,ex86q1p.com
+  - DOMAIN-KEYWORD,yandex
+  - DOMAIN-KEYWORD,yastatic

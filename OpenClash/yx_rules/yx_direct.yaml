@@ -55,8 +55,6 @@ rules:
 # 天气API
   - DOMAIN-SUFFIX,open-meteo.com
 
-  - DOMAIN-KEYWORD,yandex
-  - DOMAIN-KEYWORD,yastatic
   - DOMAIN-SUFFIX,windisco.com
   - DOMAIN-SUFFIX,deqixs.com
   - DOMAIN-SUFFIX,bootgraph.com
