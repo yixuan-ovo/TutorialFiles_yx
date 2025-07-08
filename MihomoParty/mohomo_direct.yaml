@@ -7,6 +7,7 @@ rewrite:
 +rules:
 # 域名被墙了
 #  - DOMAIN-SUFFIX,yixr.fun,DIRECT
+  - DOMAIN-SUFFIX,yixr.fun,DIRECT🚀 强制代理
   - DOMAIN-SUFFIX,chatboxai.app,DIRECT
   - DOMAIN-SUFFIX,ingest.global-contribute.live-video.net,DIRECT
   - DOMAIN-SUFFIX,immersivetranslate.com,DIRECT

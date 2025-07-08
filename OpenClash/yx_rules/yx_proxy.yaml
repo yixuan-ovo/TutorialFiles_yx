@@ -1,4 +1,5 @@
 rules:
+  - DOMAIN-SUFFIX,yixr.fun
   - DOMAIN-SUFFIX,qinight.com
   - DOMAIN-SUFFIX,v2fy.com
 # 证书
