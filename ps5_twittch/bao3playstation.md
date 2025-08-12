@@ -1,3 +1,13 @@
+## 2025.8.11 :
+
+-       nslookup hkg06.contribute.live-video.net 运行_dnsmasq电脑_ip
+看看返回的是不是 192.168.7.101。如果不是，说明规则没走到。
+
+-       dig hkg06.contribute.live-video.net
+看返回 IP 是否是 192.168.7.101。
+
+![img.png](./img/img_9.png)
+
 ## 2025.5.20 更新：
 <font size=3>**_twittch推流地址可能有变化，现在改成下图这个才能抓到推流_**</font>
 ![img.png](./img/123.png)
