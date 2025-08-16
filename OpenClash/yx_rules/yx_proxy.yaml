@@ -10,3 +10,4 @@ rules:
   - DOMAIN-SUFFIX,ex86q1p.com
   - DOMAIN-KEYWORD,yandex
   - DOMAIN-KEYWORD,yastatic
+  - DOMAIN-SUFFIX,deepl.com

@@ -73,3 +73,11 @@ rewrite:
   - DOMAIN-SUFFIX,18comic.vip,🚀 强制代理
   - DOMAIN-SUFFIX,h233.eu.org,🚀 强制代理
   - DOMAIN-SUFFIX,deqixs.com,DIRECT
+  
+  - DOMAIN-SUFFIX,bootgraph.com,DIRECT
+  - DOMAIN-SUFFIX,ex86q1p.com,🚀 强制代理
+  - DOMAIN-SUFFIX,cy227.com,DIRECT
+  - DOMAIN-SUFFIX,txcb.net,DIRECT
+
+  - DOMAIN-SUFFIX,qisuu.cc,DIRECT
+  - DOMAIN-SUFFIX,deepl.com,🚀 强制代理
