@@ -75,4 +75,8 @@ github地址:
 
 ## 增加kodi配置过程,修改mihomo为sparkle
 
+## 增加小闪存模式下openclash的文件备份,否则一旦更新系统就会丢失
+
+/OpenClash/tmp-bak
+
 # 待续...
