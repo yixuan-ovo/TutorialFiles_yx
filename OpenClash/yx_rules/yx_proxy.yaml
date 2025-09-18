@@ -12,4 +12,3 @@ rules:
   - DOMAIN-KEYWORD,yastatic
   - DOMAIN-SUFFIX,deepl.com
   - DOMAIN-SUFFIX,cursordocs.com
-  - DOMAIN-SUFFIX,stun.playstation.net
