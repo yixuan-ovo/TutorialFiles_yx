@@ -12,3 +12,7 @@ rules:
   - DOMAIN-KEYWORD,yastatic
   - DOMAIN-SUFFIX,deepl.com
   - DOMAIN-SUFFIX,cursordocs.com
+  - DOMAIN-SUFFIX,obsproject.com
+  - DOMAIN-KEYWORD,xfltd
+  - DOMAIN-KEYWORD,fibacc
+  - DOMAIN-SUFFIX,fibxac.com
