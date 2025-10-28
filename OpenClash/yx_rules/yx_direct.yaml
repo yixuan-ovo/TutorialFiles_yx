@@ -2,7 +2,7 @@ rules:
   # 直接连接特定的域名
   - DOMAIN,gstore.val.manlaxy.com
 
-  # - DOMAIN-SUFFIX,yixr.fun
+  # - DOMAIN-SUFFIX,yixr.uno
   - DOMAIN-SUFFIX,chatboxai.app
   - DOMAIN-SUFFIX,ingest.global-contribute.live-video.net
   - DOMAIN-SUFFIX,immersivetranslate.com
