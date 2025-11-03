@@ -69,3 +69,4 @@ rules:
   - DOMAIN-SUFFIX,zopim.com
   - DOMAIN-SUFFIX,zencdn.net
   - DOMAIN-SUFFIX,code.jquery.com
+  - DOMAIN-SUFFIX,moondroplab.tech
