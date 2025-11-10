@@ -95,3 +95,4 @@ rewrite:
   - DOMAIN-SUFFIX,zencdn.net,DIRECT
   - DOMAIN-SUFFIX,jquery.com,DIRECT
   - DOMAIN-SUFFIX,moondroplab.tech,DIRECT
+  - DOMAIN-SUFFIX,diagrams.net,DIRECT

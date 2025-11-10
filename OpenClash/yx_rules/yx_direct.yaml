@@ -70,3 +70,4 @@ rules:
   - DOMAIN-SUFFIX,zencdn.net
   - DOMAIN-SUFFIX,code.jquery.com
   - DOMAIN-SUFFIX,moondroplab.tech
+  - DOMAIN-SUFFIX,diagrams.net
