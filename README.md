@@ -73,10 +73,16 @@ github地址:
 
 ## 增加使用去广告插件的记录
 
-## 增加kodi配置过程,修改mihomo为sparkle
+## 增加kodi配置过程,~~修改mihomo为sparkle~~
 
 ## 增加小闪存模式下openclash的文件备份,否则一旦更新系统就会丢失
 
 /OpenClash/tmp-bak
+
+## 增加注册表值(win11_bug-reg)
+
+解决Windows 24H2 系统中基于 Chromium 的应用程序出现渲染异常/部分卡顿
+
+参考[这个](https://www.reddit.com/r/Windows11/comments/1kgp7ar/cause_and_solution_to_windows_24h2_related/)
 
 # 待续...
