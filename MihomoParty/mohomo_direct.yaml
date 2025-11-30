@@ -96,3 +96,7 @@ rewrite:
   - DOMAIN-SUFFIX,jquery.com,DIRECT
   - DOMAIN-SUFFIX,moondroplab.tech,DIRECT
   - DOMAIN-SUFFIX,diagrams.net,DIRECT
+  - DOMAIN-SUFFIX,unpkg.com,🚀 强制代理
+  - DOMAIN-SUFFIX,dify.ai,🚀 强制代理
+  - DOMAIN-SUFFIX,app.framerstatic.com,🚀 强制代理
+  - DOMAIN-SUFFIX,framer.com,🚀 强制代理
