@@ -1,0 +1,404 @@
+# ==================== 锚点配置 ====================
+# 代理提供者模板 - 订阅源基础配置
+BaseProvider: &BaseProvider {type: http, interval: 86400, proxy: DIRECT, health-check: {enable: true, url: 'https://www.google.com/generate_204', interval: 300}, filter: '^(?!.*(群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author))'}
+
+# 策略组类型模板 - 定义不同的策略组基础配置
+BaseFB: &BaseFB       {type: fallback, interval: 200, lazy: true, url: 'https://www.google.com/generate_204'}
+BaseLB: &BaseLB       {type: load-balance, interval: 200, lazy: true, url: 'https://www.google.com/generate_204'}
+BaseSmart: &BaseSmart {type: smart, interval: 200, lazy: true, url: 'https://www.google.com/generate_204', hidden: true, uselightgbm: true}
+
+# 节点筛选正则表达式 - 基于地理位置和关键词过滤（根据 yx_riolu.ini 调整）
+FilterHK: &FilterHK '^(?=.*(?i)(^HK|港|HK|hk|Hong Kong|HongKong|hongkong|HKG))(?!.*(排除1|排除2|5x)).*$'
+FilterTW: &FilterTW '^(?=.*(?i)(^TW|台|新北|彰化|TW|Taiwan|TPE|TSA|KHH))(?!.*(排除1|排除2|5x)).*$'
+FilterSG: &FilterSG '^(?=.*(?i)(^SG|新加坡|坡|狮城|SG|Singapore|SIN|XSP))(?!.*(排除1|排除2|5x)).*$'
+FilterJP: &FilterJP '^(?=.*(?i)(^JP|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan|NRT|HND|KIX|CTS|FUK))(?!.*(排除1|排除2|5x)).*$'
+FilterUS: &FilterUS '^(?=.*(?i)(^US|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|USA|SJC|JFK|LAX|ORD|ATL|DFW|SFO|MIA|SEA|IAD))(?!.*(排除1|排除2|5x)).*$'
+FilterUK: &FilterUK '^(?=.*(?i)(^UK|英|伦敦|曼彻斯特|伯明翰|爱丁堡|格拉斯哥|利兹|利物浦|纽卡斯尔|布里斯托|卡迪夫|贝尔法斯特|UK|United Kingdom|GB|LHR|LGW))(?!.*(排除1|排除2|5x)).*$'
+FilterAL: &FilterAL '^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author))'
+
+# 策略组代理列表模板 - 预定义的代理节点优先级排序（根据 yx_riolu.ini 调整）
+SelectDC: &SelectDC {type: select, proxies: [🎯 直接连接, 🀄 香港节点, 🇨🇳 台湾节点, 🗾 日本节点, ➕ 新加坡节点, 🗽 美国节点, 🇬🇧 英国节点, 👨‍🦽 手动选择]}
+SelectHK: &SelectHK {type: select, proxies: [🀄 香港节点, 🇨🇳 台湾节点, ➕ 新加坡节点, 🗾 日本节点, 🗽 美国节点, 🇬🇧 英国节点, 👨‍🦽 手动选择, 🎯 直接连接]}
+SelectTW: &SelectTW {type: select, proxies: [🇨🇳 台湾节点, 🀄 香港节点, ➕ 新加坡节点, 🗾 日本节点, 🗽 美国节点, 🇬🇧 英国节点, 👨‍🦽 手动选择, 🎯 直接连接]}
+SelectSG: &SelectSG {type: select, proxies: [➕ 新加坡节点, 🀄 香港节点, 🇨🇳 台湾节点, 🗾 日本节点, 🗽 美国节点, 🇬🇧 英国节点, 👨‍🦽 手动选择, 🎯 直接连接]}
+
+# ==================== 代理提供者 ====================
+proxy-providers:
+  # 优质订阅源 - 优质节点集合，使用时请修改
+  优质服务商: {<<: *BaseProvider, url: '订阅地址', override: {additional-prefix: '[优] '}}
+  # 备用订阅源 - 次优节点集合，使用时请修改（单服务商可注释）
+  # 备用服务商: {<<: *BaseProvider, url: '备用订阅源地址', override: {additional-prefix: '[备] '}}
+  # 落地订阅源 - 落地服务连接，使用时请修改（单服务商可注释）
+  # 落地服务商: {<<: *BaseProvider, url: '落地订阅源地址', override: {additional-prefix: '[中] ', dialer-proxy: 中转服务}}
+
+# ==================== 监听器 ====================
+listeners:
+  # Mixed监听器 - 分地区专用端口 玩法：本地浏览器插件或手机APP配置代理，实现分地区访问
+  - {name: MIXED-HK, type: mixed, port: 50000, proxy: '🀄 香港节点'}
+  - {name: MIXED-TW, type: mixed, port: 50001, proxy: '🇨🇳 台湾节点'}
+  - {name: MIXED-SG, type: mixed, port: 50002, proxy: '➕ 新加坡节点'}
+  - {name: MIXED-JP, type: mixed, port: 50003, proxy: '🗾 日本节点'}
+  - {name: MIXED-US, type: mixed, port: 50004, proxy: '🗽 美国节点'}
+  - {name: MIXED-UK, type: mixed, port: 50005, proxy: '🇬🇧 英国节点'}
+
+# ==================== 核心配置 ====================
+# 基础配置
+mode: rule
+port: 7890
+socks-port: 7891
+redir-port: 7892
+mixed-port: 7893
+tproxy-port: 7895
+ipv6: false
+allow-lan: true
+unified-delay: true
+tcp-concurrent: true
+log-level: warning
+bind-address: '*'
+find-process-mode: 'always'
+global-client-fingerprint: chrome
+keep-alive-interval: 15
+keep-alive-idle: 600
+
+# 实验性功能
+experimental:
+  quic-go-disable-gso: true  
+
+# 配置存储
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+# 流量嗅探
+sniffer:
+  enable: true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  skip-domain:
+    - "Mijia Cloud"
+    - "+.push.apple.com"
+
+# TUN模式配置
+tun:
+  enable: false
+  stack: mixed
+  dns-hijack:
+    - "any:53"
+    - "tcp://any:53"
+  auto-route: true
+  auto-redirect: true
+  auto-detect-interface: true
+    
+# DNS配置 - 完整防泄露版本
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  ipv6: false
+  respect-rules: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 28.0.0.1/8
+  fake-ip-filter-mode: blacklist
+  default-nameserver:
+    - tls://223.5.5.5
+    - tls://223.6.6.6
+  proxy-server-nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+  direct-nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+  nameserver:
+    - https://8.8.8.8/dns-query#RULES&ecs=223.5.5.0/24
+  fake-ip-filter:
+    - "*"
+    - "+.lan"
+    - "+.local"
+    - "rule-set:Private,Direct,China"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
+    - "time.*.com"
+    - "+.market.xiaomi.com"
+
+# ==================== 代理策略组 ====================
+proxy-groups:
+  # 应用策略层 - Select手动选择，支持多场景应用优化（根据 yx_riolu.ini 调整）
+  - {name: 🚀 全部节点,  type: select, include-all: true}
+  - {name: 🚀 强制代理,  <<: *SelectHK}
+  - {name: 🚀 GitHub,  <<: *SelectHK}
+  - {name: 💬 即时通讯,  <<: *SelectHK}
+  - {name: 🌐 社交媒体,  <<: *SelectHK}
+  - {name: 🤖 GPT-AI,  <<: *SelectSG}
+  - {name: 💬 Copilot,  <<: *SelectHK}
+  - {name: 🎶 TikTok,  <<: *SelectSG}
+  - {name: 📹 YouTube,  <<: *SelectHK}
+  - {name: 🎥 NetDisy,  <<: *SelectHK}
+  - {name: 🎥 HBO,  <<: *SelectHK}
+  - {name: 🎥 PrimeVideo,  <<: *SelectHK}
+  - {name: 🎥 Emby服,  <<: *SelectHK}
+  - {name: 🎻 Spotify,  <<: *SelectHK}
+  - {name: 📺 Bahamut,  <<: *SelectTW}
+  - {name: 🎮 游戏平台,  <<: *SelectDC}
+  - {name: 🎮 Steam,  <<: *SelectDC}
+  - {name: 🕹️ PS单用,  type: select, proxies: [👨‍🦽 手动选择]}
+  - {name: 🌎 国外媒体,  <<: *SelectHK}
+  - {name: 🛒 国外电商,  <<: *SelectHK}
+  - {name: 📢 谷歌FCM,  <<: *SelectDC}
+  - {name: 📢 谷歌服务,  <<: *SelectHK}
+  - {name: 🎥 AppleTV+,  <<: *SelectHK}
+  - {name: 🍎 苹果服务,  <<: *SelectDC}
+  - {name: Ⓜ️ 微软服务,  <<: *SelectDC}
+  - {name: 💶 PayPal,  <<: *SelectHK}
+  - {name: 🚀 网络测试,  <<: *SelectDC}
+  - {name: 🔀 非标端口,  type: select, proxies: [🐟 遵循规则, 🎯 直接连接]}
+  - {name: 🎯 国内流量,  <<: *SelectDC}
+  - {name: 🐟 漏网之鱼,  <<: *SelectDC}
+  - {name: 🐟 遵循规则,  type: select, proxies: [🐟 漏网之鱼]}
+  - {name: 👨‍🦽 手动选择,  type: select, include-all: true, filter: *FilterAL}
+  - {name: 🎯 直接连接,  type: select, proxies: [DIRECT], hidden: true}
+
+ # 地理策略层 - url-test 自动选择，根据 yx_riolu.ini 调整
+  - {name: 🀄 香港节点,  type: url-test, filter: *FilterHK, include-all: true, url: 'http://cp.cloudflare.com/generate_204', interval: 300}
+  - {name: 🇨🇳 台湾节点,  type: url-test, filter: *FilterTW, include-all: true, url: 'http://cp.cloudflare.com/generate_204', interval: 300}
+  - {name: 🗾 日本节点,  type: url-test, filter: *FilterJP, include-all: true, url: 'http://cp.cloudflare.com/generate_204', interval: 300}
+  - {name: ➕ 新加坡节点,  type: url-test, filter: *FilterSG, include-all: true, url: 'http://cp.cloudflare.com/generate_204', interval: 300}
+  - {name: 🗽 美国节点,  type: url-test, filter: *FilterUS, include-all: true, url: 'http://cp.cloudflare.com/generate_204', interval: 300}
+  - {name: 🇬🇧 英国节点,  type: url-test, filter: *FilterUK, include-all: true, url: 'http://cp.cloudflare.com/generate_204', interval: 300}
+  
+  # 中转服务层 - LoadBalance负载均衡，提供中转服务提升连通性，选用一个或多个服务商做中转，比如 优质服务商，可通过正则表达式，过滤掉不需要的节点，单服务商时可注释掉
+  # - {name: 中转服务,  <<: *BaseLB, use: [优质服务商], filter: 'HK|TW', hidden: true, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin.png}
+
+# ==================== 规则路由 ====================
+# 规则顺序根据 yx_riolu.ini 调整，按照从上往下的顺序遍历，优先命中上位规则
+rules: 
+  # 拦截规则
+  - RULE-SET,Tracking,REJECT
+  - RULE-SET,Advertising,REJECT
+  - RULE-SET,AdvertisingIP,REJECT,no-resolve
+
+  # 本地地址和域名直连
+  - RULE-SET,Private,🎯 直接连接
+  - RULE-SET,PrivateIP,🎯 直接连接,no-resolve
+  - RULE-SET,Direct,🎯 直接连接
+  - RULE-SET,CustomDirect,🎯 直接连接
+  - GEOSITE,google-cn,🎯 直接连接
+  - GEOSITE,category-games@cn,🎯 直接连接
+  - RULE-SET,SteamCDN,🎯 直接连接
+  - GEOSITE,category-game-platforms-download,🎯 直接连接
+  - GEOSITE,category-public-tracker,🎯 直接连接
+
+  # 即时通讯
+  - GEOSITE,category-communication,💬 即时通讯
+  - RULE-SET,Telegram,💬 即时通讯
+  - GEOIP,telegram,💬 即时通讯,no-resolve
+  - RULE-SET,TelegramIP,💬 即时通讯,no-resolve
+
+  # 社交媒体
+  - GEOSITE,category-social-media-!cn,🌐 社交媒体
+  - RULE-SET,SocialMedia,🌐 社交媒体
+  - GEOIP,twitter,🌐 社交媒体,no-resolve
+  - GEOIP,facebook,🌐 社交媒体,no-resolve
+  - RULE-SET,SocialMediaIP,🌐 社交媒体,no-resolve
+
+  # AI服务
+  - RULE-SET,AI,🤖 GPT-AI
+  - RULE-SET,AIIP,🤖 GPT-AI,no-resolve
+  - RULE-SET,Bing,💬 Copilot
+
+  # GitHub
+  - GEOSITE,github,🚀 GitHub
+  - RULE-SET,GitHub,🚀 GitHub
+
+  # 测速工具
+  - DOMAIN-KEYWORD,speedtest,🚀 网络测试
+  - GEOSITE,category-speedtest,🚀 网络测试
+  - RULE-SET,Speedtest,🚀 网络测试
+
+  # Steam
+  - GEOSITE,steam,🎮 Steam
+  - RULE-SET,Steam,🎮 Steam
+
+  # YouTube
+  - GEOSITE,youtube,📹 YouTube
+  - RULE-SET,YouTube,📹 YouTube
+
+  # AppleTV+
+  - GEOSITE,apple-tvplus,🎥 AppleTV+
+
+  # 苹果服务
+  - RULE-SET,AppleCN,🎯 直接连接
+  - GEOSITE,apple,🍎 苹果服务
+  - RULE-SET,Apple,🍎 苹果服务
+
+  # 微软服务
+  - GEOSITE,microsoft,Ⓜ️ 微软服务
+  - RULE-SET,Microsoft,Ⓜ️ 微软服务
+
+  # 谷歌服务
+  - GEOSITE,googlefcm,📢 谷歌FCM
+  - GEOSITE,google,📢 谷歌服务
+  - RULE-SET,Google,📢 谷歌服务
+  - GEOIP,google,📢 谷歌服务,no-resolve
+  - RULE-SET,GoogleIP,📢 谷歌服务,no-resolve
+
+  # TikTok
+  - GEOSITE,tiktok,🎶 TikTok
+  - RULE-SET,TikTok,🎶 TikTok
+
+  # 流媒体服务
+  - GEOSITE,netflix,🎥 NetDisy
+  - GEOIP,netflix,🎥 NetDisy,no-resolve
+  - RULE-SET,Netflix,🎥 NetDisy
+  - RULE-SET,NetflixIP,🎥 NetDisy,no-resolve
+  - GEOSITE,disney,🎥 NetDisy
+  - RULE-SET,Disney,🎥 NetDisy
+  - GEOSITE,hbo,🎥 HBO
+  - RULE-SET,HBO,🎥 HBO
+  - GEOSITE,primevideo,🎥 PrimeVideo
+  - RULE-SET,PrimeVideo,🎥 PrimeVideo
+  - GEOSITE,category-emby,🎥 Emby服
+  - RULE-SET,Emby,🎥 Emby服
+  - RULE-SET,EmbyIP,🎥 Emby服,no-resolve
+  - GEOSITE,spotify,🎻 Spotify
+  - RULE-SET,Spotify,🎻 Spotify
+
+  # Bahamut
+  - GEOSITE,bahamut,📺 Bahamut
+  - RULE-SET,Bahamut,📺 Bahamut
+
+  # 游戏平台
+  - GEOSITE,category-games,🎮 游戏平台
+  - RULE-SET,Games,🎮 游戏平台
+
+  # 国外媒体和电商
+  - GEOSITE,category-entertainment,🌎 国外媒体
+  - RULE-SET,Streaming,🌎 国外媒体
+  - RULE-SET,StreamingIP,🌎 国外媒体,no-resolve
+  - GEOSITE,category-ecommerce,🛒 国外电商
+  - RULE-SET,Ecommerce,🛒 国外电商
+
+  # 强制代理（GFW）
+  - RULE-SET,Proxy,🚀 强制代理
+  - RULE-SET,ProxyIP,🚀 强制代理,no-resolve
+
+  # 国内域名和IP兜底
+  - GEOSITE,cn,🎯 国内流量
+  - GEOIP,cn,🎯 国内流量,no-resolve
+
+  # 非标端口
+  - RULE-SET,CustomPort,🔀 非标端口
+
+  # 补充规则 - PayPal和其他
+  - RULE-SET,PayPal,💶 PayPal
+  - RULE-SET,GeolocationCN,🚀 强制代理
+
+  # 漏网之鱼（兜底规则）
+  - MATCH,🐟 漏网之鱼
+
+# ==================== 规则集 ====================
+# 规则集行为模板
+BehaviorDN: &BehaviorDN {type: http, behavior: domain, format: mrs, interval: 86400}
+BehaviorIP: &BehaviorIP {type: http, behavior: ipcidr, format: mrs, interval: 86400}
+
+# 规则集锚点 - 简化配置
+rule-anchor:
+  ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}
+  domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
+  class: &class {type: http, interval: 86400, behavior: classical, format: text}
+
+# 规则提供者（根据 yx_riolu.ini 调整）
+rule-providers: 
+  # 拦截规则
+  Tracking:       {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Tracking.mrs}
+  Advertising:    {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Advertising.mrs} 
+  AdvertisingIP:  {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Advertising.mrs}
+
+  # 直连规则
+  Private:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Private.mrs}
+  PrivateIP:      {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Private.mrs}
+  Direct:         {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Direct.mrs}
+  CustomDirect:   {type: http, behavior: classical, format: yaml, url: https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/refs/heads/main/rule/Custom_Direct_Classical.yaml, interval: 28800}
+  SteamCDN:       {type: http, behavior: classical, format: yaml, url: https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/refs/heads/main/rule/Steam_CDN_Classical.yaml, interval: 28800}
+  CustomPort:     {type: http, behavior: classical, format: yaml, url: https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/refs/heads/main/rule/Custom_Port_Direct.yaml, interval: 28800}
+
+  # 即时通讯
+  Telegram:       {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Telegram.mrs}
+  TelegramIP:     {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Telegram.mrs}
+
+  # 社交媒体
+  SocialMedia:    {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/SocialMedia.mrs}
+  SocialMediaIP:  {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/SocialMedia.mrs}
+
+  # AI服务
+  AI:             {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/AI.mrs}  
+  AIIP:           {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/AI.mrs}
+  Bing:           {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Microsoft.mrs}
+
+  # GitHub
+  GitHub:         {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/GitHub.mrs}
+
+  # 测速工具
+  Speedtest:      {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Speedtest.mrs}
+
+  # Steam
+  Steam:          {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Steam.mrs}
+
+  # YouTube
+  YouTube:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/YouTube.mrs}
+
+  # AppleTV+
+  AppleTV:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Apple.mrs}
+
+  # 苹果服务
+  AppleCN:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/AppleCN.mrs}
+  Apple:          {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Apple.mrs}
+
+  # 微软服务
+  Microsoft:      {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Microsoft.mrs}  
+
+  # 谷歌服务
+  GoogleFCM:      {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Google.mrs}
+  Google:         {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Google.mrs}
+  GoogleIP:       {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Google.mrs}
+
+  # TikTok
+  TikTok:         {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/TikTok.mrs}
+
+  # 流媒体服务
+  Netflix:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Netflix.mrs}
+  NetflixIP:      {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Netflix.mrs}
+  Disney:         {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Disney.mrs}
+  HBO:            {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/HBO.mrs}
+  PrimeVideo:     {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/PrimeVideo.mrs}
+  Emby:           {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Emby.mrs}
+  EmbyIP:         {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Emby.mrs}
+  Spotify:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Spotify.mrs}
+
+  # Bahamut
+  Bahamut:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Bahamut.mrs}
+
+  # 游戏平台
+  Games:          {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Games.mrs}
+
+  # 国外媒体和电商
+  Streaming:      {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Streaming.mrs}  
+  StreamingIP:    {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Streaming.mrs}
+  Ecommerce:      {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Ecommerce.mrs}
+
+  # 强制代理（GFW）
+  Proxy:          {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Proxy.mrs}
+  ProxyIP:        {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Proxy.mrs}
+
+  # 国内流量
+  China:          {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/China.mrs}
+  ChinaIP:        {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/China.mrs}
+
+  # 补充规则 - 来自qiiiyu
+  PayPal:         {<<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.mrs"}
+  GeolocationCN:  {<<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs"}
+# ==================== EOF ====================
