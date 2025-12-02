@@ -8,19 +8,19 @@ BaseLB: &BaseLB       {type: load-balance, interval: 200, lazy: true, url: 'http
 BaseSmart: &BaseSmart {type: smart, interval: 200, lazy: true, url: 'https://www.google.com/generate_204', hidden: true, uselightgbm: true}
 
 # 节点筛选正则表达式 - 基于地理位置和关键词过滤（根据 yx_riolu.ini 调整）
-FilterHK: &FilterHK '^(?=.*(?i)(^HK|港|HK|hk|Hong Kong|HongKong|hongkong|HKG))(?!.*(排除1|排除2|5x)).*$'
-FilterTW: &FilterTW '^(?=.*(?i)(^TW|台|新北|彰化|TW|Taiwan|TPE|TSA|KHH))(?!.*(排除1|排除2|5x)).*$'
-FilterSG: &FilterSG '^(?=.*(?i)(^SG|新加坡|坡|狮城|SG|Singapore|SIN|XSP))(?!.*(排除1|排除2|5x)).*$'
-FilterJP: &FilterJP '^(?=.*(?i)(^JP|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|[^-]日|JP|Japan|NRT|HND|KIX|CTS|FUK))(?!.*(排除1|排除2|5x)).*$'
-FilterUS: &FilterUS '^(?=.*(?i)(^US|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States|USA|SJC|JFK|LAX|ORD|ATL|DFW|SFO|MIA|SEA|IAD))(?!.*(排除1|排除2|5x)).*$'
-FilterUK: &FilterUK '^(?=.*(?i)(^UK|英|伦敦|曼彻斯特|伯明翰|爱丁堡|格拉斯哥|利兹|利物浦|纽卡斯尔|布里斯托|卡迪夫|贝尔法斯特|UK|United Kingdom|GB|LHR|LGW))(?!.*(排除1|排除2|5x)).*$'
+FilterHK: &FilterHK '(?i).*(HK|港|Hong Kong|HongKong|hongkong|HKG).*'
+FilterTW: &FilterTW '(?i).*(TW|台|新北|彰化|Taiwan|TPE|TSA|KHH).*'
+FilterSG: &FilterSG '(?i).*(SG|新加坡|坡|狮城|Singapore|SIN|XSP).*'
+FilterJP: &FilterJP '(?i).*(JP|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|Japan|NRT|HND|KIX|CTS|FUK).*'
+FilterUS: &FilterUS '(?i).*(US|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|United States|USA|SJC|JFK|LAX|ORD|ATL|DFW|SFO|MIA|SEA|IAD).*'
+FilterUK: &FilterUK '(?i).*(UK|英|伦敦|曼彻斯特|伯明翰|爱丁堡|格拉斯哥|利兹|利物浦|纽卡斯尔|布里斯托|卡迪夫|贝尔法斯特|United Kingdom|GB|LHR|LGW).*'
 FilterAL: &FilterAL '^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author))'
 
 # 策略组代理列表模板 - 预定义的代理节点优先级排序（根据 yx_riolu.ini 调整）
-SelectDC: &SelectDC {type: select, proxies: [🎯 直接连接, 🀄 香港节点, 🇨🇳 台湾节点, 🗾 日本节点, ➕ 新加坡节点, 🗽 美国节点, 🇬🇧 英国节点, 👨‍🦽 手动选择]}
-SelectHK: &SelectHK {type: select, proxies: [🀄 香港节点, 🇨🇳 台湾节点, ➕ 新加坡节点, 🗾 日本节点, 🗽 美国节点, 🇬🇧 英国节点, 👨‍🦽 手动选择, 🎯 直接连接]}
-SelectTW: &SelectTW {type: select, proxies: [🇨🇳 台湾节点, 🀄 香港节点, ➕ 新加坡节点, 🗾 日本节点, 🗽 美国节点, 🇬🇧 英国节点, 👨‍🦽 手动选择, 🎯 直接连接]}
-SelectSG: &SelectSG {type: select, proxies: [➕ 新加坡节点, 🀄 香港节点, 🇨🇳 台湾节点, 🗾 日本节点, 🗽 美国节点, 🇬🇧 英国节点, 👨‍🦽 手动选择, 🎯 直接连接]}
+SelectDC: &SelectDC {type: select, proxies: [🎯 直接连接, 🀄 香港节点, 🇨🇳 台湾节点, 🗾 日本节点, ➕ 新加坡节点, 🗽 美国节点, 🇬🇧 英国节点]}
+SelectHK: &SelectHK {type: select, proxies: [🀄 香港节点, 🇨🇳 台湾节点, ➕ 新加坡节点, 🗾 日本节点, 🗽 美国节点, 🇬🇧 英国节点, 🎯 直接连接]}
+SelectTW: &SelectTW {type: select, proxies: [🇨🇳 台湾节点, 🀄 香港节点, ➕ 新加坡节点, 🗾 日本节点, 🗽 美国节点, 🇬🇧 英国节点, 🎯 直接连接]}
+SelectSG: &SelectSG {type: select, proxies: [➕ 新加坡节点, 🀄 香港节点, 🇨🇳 台湾节点, 🗾 日本节点, 🗽 美国节点, 🇬🇧 英国节点, 🎯 直接连接]}
 
 # ==================== 代理提供者 ====================
 proxy-providers:
@@ -162,7 +162,7 @@ dns:
 
 # ==================== 代理策略组 ====================
 proxy-groups:
-  # 应用策略层 - Select手动选择，支持多场景应用优化（根据 yx_riolu.ini 调整）
+  # 应用策略层 - Select策略组，支持多场景应用优化（根据 yx_riolu.ini 调整）
   - {name: 🚀 全部节点,  type: select, include-all: true}
   - {name: 🚀 强制代理,  <<: *SelectHK}
   - {name: 🚀 GitHub,  <<: *SelectHK}
@@ -180,7 +180,6 @@ proxy-groups:
   - {name: 📺 Bahamut,  <<: *SelectTW}
   - {name: 🎮 游戏平台,  <<: *SelectDC}
   - {name: 🎮 Steam,  <<: *SelectDC}
-  - {name: 🕹️ PS单用,  type: select, proxies: [👨‍🦽 手动选择]}
   - {name: 🌎 国外媒体,  <<: *SelectHK}
   - {name: 🛒 国外电商,  <<: *SelectHK}
   - {name: 📢 谷歌FCM,  <<: *SelectDC}
@@ -190,20 +189,17 @@ proxy-groups:
   - {name: Ⓜ️ 微软服务,  <<: *SelectDC}
   - {name: 💶 PayPal,  <<: *SelectHK}
   - {name: 🚀 网络测试,  <<: *SelectDC}
-  - {name: 🔀 非标端口,  type: select, proxies: [🐟 遵循规则, 🎯 直接连接]}
-  - {name: 🎯 国内流量,  <<: *SelectDC}
+  - {name: 🔀 非标端口,  type: select, proxies: [🐟 漏网之鱼, 🎯 直接连接]}
   - {name: 🐟 漏网之鱼,  <<: *SelectDC}
-  - {name: 🐟 遵循规则,  type: select, proxies: [🐟 漏网之鱼]}
-  - {name: 👨‍🦽 手动选择,  type: select, include-all: true, filter: *FilterAL}
   - {name: 🎯 直接连接,  type: select, proxies: [DIRECT], hidden: true}
 
  # 地理策略层 - url-test 自动选择，根据 yx_riolu.ini 调整
-  - {name: 🀄 香港节点,  type: url-test, filter: *FilterHK, include-all: true, url: 'http://cp.cloudflare.com/generate_204', interval: 300}
-  - {name: 🇨🇳 台湾节点,  type: url-test, filter: *FilterTW, include-all: true, url: 'http://cp.cloudflare.com/generate_204', interval: 300}
-  - {name: 🗾 日本节点,  type: url-test, filter: *FilterJP, include-all: true, url: 'http://cp.cloudflare.com/generate_204', interval: 300}
-  - {name: ➕ 新加坡节点,  type: url-test, filter: *FilterSG, include-all: true, url: 'http://cp.cloudflare.com/generate_204', interval: 300}
-  - {name: 🗽 美国节点,  type: url-test, filter: *FilterUS, include-all: true, url: 'http://cp.cloudflare.com/generate_204', interval: 300}
-  - {name: 🇬🇧 英国节点,  type: url-test, filter: *FilterUK, include-all: true, url: 'http://cp.cloudflare.com/generate_204', interval: 300}
+  - {name: 🀄 香港节点,  type: url-test, use: [优质服务商], filter: *FilterHK, url: 'http://cp.cloudflare.com/generate_204', interval: 300, tolerance: 50}
+  - {name: 🇨🇳 台湾节点,  type: url-test, use: [优质服务商], filter: *FilterTW, url: 'http://cp.cloudflare.com/generate_204', interval: 300, tolerance: 50}
+  - {name: 🗾 日本节点,  type: url-test, use: [优质服务商], filter: *FilterJP, url: 'http://cp.cloudflare.com/generate_204', interval: 300, tolerance: 50}
+  - {name: ➕ 新加坡节点,  type: url-test, use: [优质服务商], filter: *FilterSG, url: 'http://cp.cloudflare.com/generate_204', interval: 300, tolerance: 50}
+  - {name: 🗽 美国节点,  type: url-test, use: [优质服务商], filter: *FilterUS, url: 'http://cp.cloudflare.com/generate_204', interval: 300, tolerance: 50}
+  - {name: 🇬🇧 英国节点,  type: url-test, use: [优质服务商], filter: *FilterUK, url: 'http://cp.cloudflare.com/generate_204', interval: 300, tolerance: 50}
   
   # 中转服务层 - LoadBalance负载均衡，提供中转服务提升连通性，选用一个或多个服务商做中转，比如 优质服务商，可通过正则表达式，过滤掉不需要的节点，单服务商时可注释掉
   # - {name: 中转服务,  <<: *BaseLB, use: [优质服务商], filter: 'HK|TW', hidden: true, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin.png}
@@ -221,6 +217,398 @@ rules:
   - RULE-SET,PrivateIP,🎯 直接连接,no-resolve
   - RULE-SET,Direct,🎯 直接连接
   - RULE-SET,CustomDirect,🎯 直接连接
+  
+  # 自定义直连规则（来自 yx_ini.yaml）
+  - DOMAIN-KEYWORD,m-team,🎯 直接连接
+  - DOMAIN-KEYWORD,quickconnect,🎯 直接连接
+  - DOMAIN-KEYWORD,synology,🎯 直接连接
+  - DOMAIN-SUFFIX,03241119.xyz,🎯 直接连接
+  - DOMAIN-SUFFIX,112114.xyz,🎯 直接连接
+  - DOMAIN-SUFFIX,115cdn.de,🎯 直接连接
+  - DOMAIN-SUFFIX,1996999.xyz,🎯 直接连接
+  - DOMAIN-SUFFIX,204cloud.com,🎯 直接连接
+  - DOMAIN-SUFFIX,3d-apollo.com,🎯 直接连接
+  - DOMAIN-SUFFIX,3dwhere.com,🎯 直接连接
+  - DOMAIN-SUFFIX,4399zmxy.com,🎯 直接连接
+  - DOMAIN-SUFFIX,51wanxue.com,🎯 直接连接
+  - DOMAIN-SUFFIX,51zmt.top,🎯 直接连接
+  - DOMAIN-SUFFIX,52jiawei.com,🎯 直接连接
+  - DOMAIN-SUFFIX,52met.com,🎯 直接连接
+  - DOMAIN-SUFFIX,52muban.com,🎯 直接连接
+  - DOMAIN-SUFFIX,55555.ink,🎯 直接连接
+  - DOMAIN-SUFFIX,657192.com,🎯 直接连接
+  - DOMAIN-SUFFIX,6v520.net,🎯 直接连接
+  - DOMAIN-SUFFIX,737698.xyz,🎯 直接连接
+  - DOMAIN-SUFFIX,7sef.com,🎯 直接连接
+  - DOMAIN-SUFFIX,86656.net,🎯 直接连接
+  - DOMAIN-SUFFIX,900cha.com,🎯 直接连接
+  - DOMAIN-SUFFIX,985hezi.com,🎯 直接连接
+  - DOMAIN-SUFFIX,998tool.com,🎯 直接连接
+  - DOMAIN-SUFFIX,adobe.com,🎯 直接连接
+  - DOMAIN-SUFFIX,afeica.com,🎯 直接连接
+  - DOMAIN-SUFFIX,afuns.me,🎯 直接连接
+  - DOMAIN-SUFFIX,aichangbaishan.com,🎯 直接连接
+  - DOMAIN-SUFFIX,aistudio-app.com,🎯 直接连接
+  - DOMAIN-SUFFIX,akamaihd.net,🎯 直接连接
+  - DOMAIN-SUFFIX,akamaized.net,🎯 直接连接
+  - DOMAIN-SUFFIX,aloys233.top,🎯 直接连接
+  - DOMAIN-SUFFIX,antping.com,🎯 直接连接
+  - DOMAIN-SUFFIX,anycubic.com,🎯 直接连接
+  - DOMAIN-SUFFIX,api.myip.com,🎯 直接连接
+  - DOMAIN-SUFFIX,armvm.com,🎯 直接连接
+  - DOMAIN-SUFFIX,atticus.vip,🎯 直接连接
+  - DOMAIN-SUFFIX,baiyishequ.com,🎯 直接连接
+  - DOMAIN-SUFFIX,bangumi.tv,🎯 直接连接
+  - DOMAIN-SUFFIX,bdcb.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,belimked.com,🎯 直接连接
+  - DOMAIN-SUFFIX,bgm.tv,🎯 直接连接
+  - DOMAIN-SUFFIX,biandangroup.com,🎯 直接连接
+  - DOMAIN-SUFFIX,biaoda.me,🎯 直接连接
+  - DOMAIN-SUFFIX,bochk.com,🎯 直接连接
+  - DOMAIN-SUFFIX,boyuemobile.com,🎯 直接连接
+  - DOMAIN-SUFFIX,bsbsb.top,🎯 直接连接
+  - DOMAIN-SUFFIX,canghaiip.com,🎯 直接连接
+  - DOMAIN-SUFFIX,cdn.ist,🎯 直接连接
+  - DOMAIN-SUFFIX,centbrowser.net,🎯 直接连接
+  - DOMAIN-SUFFIX,cg3da.com,🎯 直接连接
+  - DOMAIN-SUFFIX,chaxunjiao.com,🎯 直接连接
+  - DOMAIN-SUFFIX,chaz.fun,🎯 直接连接
+  - DOMAIN-SUFFIX,checkip.dyndns.org,🎯 直接连接
+  - DOMAIN-SUFFIX,checkipv6.dyndns.org,🎯 直接连接
+  - DOMAIN-SUFFIX,chenyuxia.com,🎯 直接连接
+  - DOMAIN-SUFFIX,cheriexsky.love,🎯 直接连接
+  - DOMAIN-SUFFIX,cheshire.top,🎯 直接连接
+  - DOMAIN-SUFFIX,chii.in,🎯 直接连接
+  - DOMAIN-SUFFIX,chinatle.com,🎯 直接连接
+  - DOMAIN-SUFFIX,chujingapp.com,🎯 直接连接
+  - DOMAIN-SUFFIX,clivia.fun,🎯 直接连接
+  - DOMAIN-SUFFIX,cn-music.mefun.vip,🎯 直接连接
+  - DOMAIN-SUFFIX,cnb.space,🎯 直接连接
+  - DOMAIN-SUFFIX,codeloop.top,🎯 直接连接
+  - DOMAIN-SUFFIX,coffee-iot.com,🎯 直接连接
+  - DOMAIN-SUFFIX,congmiqq.com,🎯 直接连接
+  - DOMAIN-SUFFIX,coros.com,🎯 直接连接
+  - DOMAIN-SUFFIX,crtyhr.com,🎯 直接连接
+  - DOMAIN-SUFFIX,day.app,🎯 直接连接
+  - DOMAIN-SUFFIX,dcgstd.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ddsrem.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ddzn.tech,🎯 直接连接
+  - DOMAIN-SUFFIX,dell.com,🎯 直接连接
+  - DOMAIN-SUFFIX,dhub.kubesre.xyz,🎯 直接连接
+  - DOMAIN-SUFFIX,dingdingzn.com,🎯 直接连接
+  - DOMAIN-SUFFIX,diyiedu.com,🎯 直接连接
+  - DOMAIN-SUFFIX,docker.1panel.live,🎯 直接连接
+  - DOMAIN-SUFFIX,docker.kejilion.pro,🎯 直接连接
+  - DOMAIN-SUFFIX,docker.unsee.tech,🎯 直接连接
+  - DOMAIN-SUFFIX,dockerpull.org,🎯 直接连接
+  - DOMAIN-SUFFIX,dockerpull.pw,🎯 直接连接
+  - DOMAIN-SUFFIX,dothantech.com,🎯 直接连接
+  - DOMAIN-SUFFIX,douqq.com,🎯 直接连接
+  - DOMAIN-SUFFIX,drvceo.com,🎯 直接连接
+  - DOMAIN-SUFFIX,dskj-ops.com,🎯 直接连接
+  - DOMAIN-SUFFIX,dushe1.app,🎯 直接连接
+  - DOMAIN-SUFFIX,easytier.top,🎯 直接连接
+  - DOMAIN-SUFFIX,einfo-tech.com,🎯 直接连接
+  - DOMAIN-SUFFIX,englibrary.com,🎯 直接连接
+  - DOMAIN-SUFFIX,epg.aptv.app,🎯 直接连接
+  - DOMAIN-SUFFIX,epg.v1.mk,🎯 直接连接
+  - DOMAIN-SUFFIX,everdrawing.com,🎯 直接连接
+  - DOMAIN-SUFFIX,feihengip.com,🎯 直接连接
+  - DOMAIN-SUFFIX,feizhiyi.com,🎯 直接连接
+  - DOMAIN-SUFFIX,fengsutb.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ffhome.com,🎯 直接连接
+  - DOMAIN-SUFFIX,fjpit.com,🎯 直接连接
+  - DOMAIN-SUFFIX,flingtrainer.com,🎯 直接连接
+  - DOMAIN-SUFFIX,fofuai.com,🎯 直接连接
+  - DOMAIN-SUFFIX,fowep.com,🎯 直接连接
+  - DOMAIN-SUFFIX,freetv.top,🎯 直接连接
+  - DOMAIN-SUFFIX,frp-ski.com,🎯 直接连接
+  - DOMAIN-SUFFIX,fssbcc.top,🎯 直接连接
+  - DOMAIN-SUFFIX,fsytss.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ft07.com,🎯 直接连接
+  - DOMAIN-SUFFIX,fuziche.com,🎯 直接连接
+  - DOMAIN-SUFFIX,fzvcolco.com,🎯 直接连接
+  - DOMAIN-SUFFIX,fzwqq.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gaishitongshu.com,🎯 直接连接
+  - DOMAIN-SUFFIX,game.maj-soul.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gangtise.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gaojiua.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gdcucc.v1.mk,🎯 直接连接
+  - DOMAIN-SUFFIX,geektool.top,🎯 直接连接
+  - DOMAIN-SUFFIX,ggbond.org,🎯 直接连接
+  - DOMAIN-SUFFIX,gh-proxy.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gh.con.sh,🎯 直接连接
+  - DOMAIN-SUFFIX,gh.ddlc.top,🎯 直接连接
+  - DOMAIN-SUFFIX,gh.llkk.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,ghfast.top,🎯 直接连接
+  - DOMAIN-SUFFIX,ghoxz.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ghp.ci,🎯 直接连接
+  - DOMAIN-SUFFIX,ghproxy.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,ghproxy.cfd,🎯 直接连接
+  - DOMAIN-SUFFIX,ghps.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,girigirilove.com,🎯 直接连接
+  - DOMAIN-SUFFIX,git.886.be,🎯 直接连接
+  - DOMAIN-SUFFIX,github.abskoop.workers.dev,🎯 直接连接
+  - DOMAIN-SUFFIX,github.boki.moe,🎯 直接连接
+  - DOMAIN-SUFFIX,github.moeyy.xyz,🎯 直接连接
+  - DOMAIN-SUFFIX,github.site,🎯 直接连接
+  - DOMAIN-SUFFIX,github.store,🎯 直接连接
+  - DOMAIN-SUFFIX,giveup.top,🎯 直接连接
+  - DOMAIN-SUFFIX,gjtool.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gmoj.net,🎯 直接连接
+  - DOMAIN-SUFFIX,gmya.net,🎯 直接连接
+  - DOMAIN-SUFFIX,goalmapapp.com,🎯 直接连接
+  - DOMAIN-SUFFIX,goka.top,🎯 直接连接
+  - DOMAIN-SUFFIX,googoc.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gootho.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gseen.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gsgltz.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gsjkjt.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gsnhcg.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gsstic.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gxnnjidingkeji.top,🎯 直接连接
+  - DOMAIN-SUFFIX,gzybao.com,🎯 直接连接
+  - DOMAIN-SUFFIX,halvie.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ham.xin,🎯 直接连接
+  - DOMAIN-SUFFIX,haoxueche.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hbcof.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hbctic.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hdbz.net,🎯 直接连接
+  - DOMAIN-SUFFIX,hexiny.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hf-mirror.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hijin.vip,🎯 直接连接
+  - DOMAIN-SUFFIX,hnxzctec.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hsbc.com.hk,🎯 直接连接
+  - DOMAIN-SUFFIX,hstbroker.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hszq6.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hub.crdz.gq,🎯 直接连接
+  - DOMAIN-SUFFIX,hub.gitmirror.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hub.rat.dev,🎯 直接连接
+  - DOMAIN-SUFFIX,hub.xdark.top,🎯 直接连接
+  - DOMAIN-SUFFIX,huikao8.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hwbim.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hwjianmo.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hwzuku.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hzlawyer.net,🎯 直接连接
+  - DOMAIN-SUFFIX,hzqsn.com,🎯 直接连接
+  - DOMAIN-SUFFIX,icvcs.com,🎯 直接连接
+  - DOMAIN-SUFFIX,idsduf.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ifconfig.co,🎯 直接连接
+  - DOMAIN-SUFFIX,ifengmap.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ifish7.com,🎯 直接连接
+  - DOMAIN-SUFFIX,igpsport.com,🎯 直接连接
+  - DOMAIN-SUFFIX,imacos.top,🎯 直接连接
+  - DOMAIN-SUFFIX,immortalwrt.org,🎯 直接连接
+  - DOMAIN-SUFFIX,iotrix.net,🎯 直接连接
+  - DOMAIN-SUFFIX,ip159.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ip6.seeip.org,🎯 直接连接
+  - DOMAIN-SUFFIX,ipapi.co,🎯 直接连接
+  - DOMAIN-SUFFIX,ipshu.com,🎯 直接连接
+  - DOMAIN-SUFFIX,istoreos.com,🎯 直接连接
+  - DOMAIN-SUFFIX,itptg.com,🎯 直接连接
+  - DOMAIN-SUFFIX,jfjt.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,jh96095.com,🎯 直接连接
+  - DOMAIN-SUFFIX,jingheiot.com,🎯 直接连接
+  - DOMAIN-SUFFIX,jiqw.com,🎯 直接连接
+  - DOMAIN-SUFFIX,jsdelivr.net,🎯 直接连接
+  - DOMAIN-SUFFIX,julebu.co,🎯 直接连接
+  - DOMAIN-SUFFIX,jxjktzjt.com,🎯 直接连接
+  - DOMAIN-SUFFIX,jxpp.com,🎯 直接连接
+  - DOMAIN-SUFFIX,kaijiejinrong.com,🎯 直接连接
+  - DOMAIN-SUFFIX,kaspersky-labs.com,🎯 直接连接
+  - DOMAIN-SUFFIX,kaspersky.com,🎯 直接连接
+  - DOMAIN-SUFFIX,keyoo.com,🎯 直接连接
+  - DOMAIN-SUFFIX,kgithub.com,🎯 直接连接
+  - DOMAIN-SUFFIX,kit327.com,🎯 直接连接
+  - DOMAIN-SUFFIX,kmeila.com,🎯 直接连接
+  - DOMAIN-SUFFIX,kuaicha888.com,🎯 直接连接
+  - DOMAIN-SUFFIX,kyarucloud.moe,🎯 直接连接
+  - DOMAIN-SUFFIX,lanyun.net,🎯 直接连接
+  - DOMAIN-SUFFIX,laogongju.com,🎯 直接连接
+  - DOMAIN-SUFFIX,leelen.com,🎯 直接连接
+  - DOMAIN-SUFFIX,letaoedu.com,🎯 直接连接
+  - DOMAIN-SUFFIX,liunn.com,🎯 直接连接
+  - DOMAIN-SUFFIX,longmenshuju.com,🎯 直接连接
+  - DOMAIN-SUFFIX,lsbj365.com,🎯 直接连接
+  - DOMAIN-SUFFIX,lyihub.com,🎯 直接连接
+  - DOMAIN-SUFFIX,lyilife.com,🎯 直接连接
+  - DOMAIN-SUFFIX,m-team.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,m-team.io,🎯 直接连接
+  - DOMAIN-SUFFIX,manfuz.co,🎯 直接连接
+  - DOMAIN-SUFFIX,mc-user.com,🎯 直接连接
+  - DOMAIN-SUFFIX,meishiffx.online,🎯 直接连接
+  - DOMAIN-SUFFIX,members.3322.org,🎯 直接连接
+  - DOMAIN-SUFFIX,micu.hk,🎯 直接连接
+  - DOMAIN-SUFFIX,mifeng.plus,🎯 直接连接
+  - DOMAIN-SUFFIX,mobai.sbs,🎯 直接连接
+  - DOMAIN-SUFFIX,modelscope.net,🎯 直接连接
+  - DOMAIN-SUFFIX,msftconnecttest.com,🎯 直接连接
+  - DOMAIN-SUFFIX,msftncsi.com,🎯 直接连接
+  - DOMAIN-SUFFIX,mslmc.net,🎯 直接连接
+  - DOMAIN-SUFFIX,mtaokj.com,🎯 直接连接
+  - DOMAIN-SUFFIX,mykuaidi.com,🎯 直接连接
+  - DOMAIN-SUFFIX,myshopex.com,🎯 直接连接
+  - DOMAIN-SUFFIX,naixi.com,🎯 直接连接
+  - DOMAIN-SUFFIX,neihang.net,🎯 直接连接
+  - DOMAIN-SUFFIX,netzz.net,🎯 直接连接
+  - DOMAIN-SUFFIX,nhk.or.jp,🎯 直接连接
+  - DOMAIN-SUFFIX,nicezhuanye.com,🎯 直接连接
+  - DOMAIN-SUFFIX,nn.ci,🎯 直接连接
+  - DOMAIN-SUFFIX,nxog.top,🎯 直接连接
+  - DOMAIN-SUFFIX,oceando.cloud,🎯 直接连接
+  - DOMAIN-SUFFIX,ok321.top,🎯 直接连接
+  - DOMAIN-SUFFIX,onebuygz.com,🎯 直接连接
+  - DOMAIN-SUFFIX,opentrust.net,🎯 直接连接
+  - DOMAIN-SUFFIX,ottai.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ourschool.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,paperang.com,🎯 直接连接
+  - DOMAIN-SUFFIX,pixcheese.com,🎯 直接连接
+  - DOMAIN-SUFFIX,plusde1.younoyes.com,🎯 直接连接
+  - DOMAIN-SUFFIX,plushk1.younoyes.com,🎯 直接连接
+  - DOMAIN-SUFFIX,plushk2.younoyes.com,🎯 直接连接
+  - DOMAIN-SUFFIX,plushk3.younoyes.com,🎯 直接连接
+  - DOMAIN-SUFFIX,plusjp1.younoyes.com,🎯 直接连接
+  - DOMAIN-SUFFIX,plusus1.younoyes.com,🎯 直接连接
+  - DOMAIN-SUFFIX,plusus2.younoyes.com,🎯 直接连接
+  - DOMAIN-SUFFIX,plusus3.younoyes.com,🎯 直接连接
+  - DOMAIN-SUFFIX,pool.ntp.org,🎯 直接连接
+  - DOMAIN-SUFFIX,powershellgallery.com,🎯 直接连接
+  - DOMAIN-SUFFIX,privateapi.xyz,🎯 直接连接
+  - DOMAIN-SUFFIX,ptl.gs,🎯 直接连接
+  - DOMAIN-SUFFIX,ptlgs.org,🎯 直接连接
+  - DOMAIN-SUFFIX,pwithe.com,🎯 直接连接
+  - DOMAIN-SUFFIX,qiankunshopping.com,🎯 直接连接
+  - DOMAIN-SUFFIX,qianuni.com,🎯 直接连接
+  - DOMAIN-SUFFIX,qianxuecloud.com,🎯 直接连接
+  - DOMAIN-SUFFIX,qianxueyunke.com,🎯 直接连接
+  - DOMAIN-SUFFIX,qiaoxuesi.com,🎯 直接连接
+  - DOMAIN-SUFFIX,qinglue.com,🎯 直接连接
+  - DOMAIN-SUFFIX,qmeng.top,🎯 直接连接
+  - DOMAIN-SUFFIX,redenmc.com,🎯 直接连接
+  - DOMAIN-SUFFIX,registry.dockermirror.com,🎯 直接连接
+  - DOMAIN-SUFFIX,rewards.bing.com,🎯 直接连接
+  - DOMAIN-SUFFIX,royqh.net,🎯 直接连接
+  - DOMAIN-SUFFIX,rsfcxq.com,🎯 直接连接
+  - DOMAIN-SUFFIX,saduck.top,🎯 直接连接
+  - DOMAIN-SUFFIX,sanligu.top,🎯 直接连接
+  - DOMAIN-SUFFIX,sapphiretech.com,🎯 直接连接
+  - DOMAIN-SUFFIX,scbaijia.com,🎯 直接连接
+  - DOMAIN-SUFFIX,sct.ftqq.com,🎯 直接连接
+  - DOMAIN-SUFFIX,seaflysoft.com,🎯 直接连接
+  - DOMAIN-SUFFIX,seedpace.com,🎯 直接连接
+  - DOMAIN-SUFFIX,sgtv.ii00.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,shineacc.com,🎯 直接连接
+  - DOMAIN-SUFFIX,shunjing.xin,🎯 直接连接
+  - DOMAIN-SUFFIX,shuqiandiqiu.com,🎯 直接连接
+  - DOMAIN-SUFFIX,shyxhy.com,🎯 直接连接
+  - DOMAIN-SUFFIX,sixloy428.top,🎯 直接连接
+  - DOMAIN-SUFFIX,sksight.com,🎯 直接连接
+  - DOMAIN-SUFFIX,snfox.com,🎯 直接连接
+  - DOMAIN-SUFFIX,snltty.com,🎯 直接连接
+  - DOMAIN-SUFFIX,sptv.ii00.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,ssjj2.com,🎯 直接连接
+  - DOMAIN-SUFFIX,starlink.uno,🎯 直接连接
+  - DOMAIN-SUFFIX,stkfanli.com,🎯 直接连接
+  - DOMAIN-SUFFIX,suyur.com,🎯 直接连接
+  - DOMAIN-SUFFIX,sxlljm.com,🎯 直接连接
+  - DOMAIN-SUFFIX,tailgdd.com,🎯 直接连接
+  - DOMAIN-SUFFIX,tangguobaohe.com,🎯 直接连接
+  - DOMAIN-SUFFIX,tclai.top,🎯 直接连接
+  - DOMAIN-SUFFIX,tcp.pub,🎯 直接连接
+  - DOMAIN-SUFFIX,tcp5.com,🎯 直接连接
+  - DOMAIN-SUFFIX,tcy365.net,🎯 直接连接
+  - DOMAIN-SUFFIX,thinkerride.com,🎯 直接连接
+  - DOMAIN-SUFFIX,tool56.com,🎯 直接连接
+  - DOMAIN-SUFFIX,topwd.top,🎯 直接连接
+  - DOMAIN-SUFFIX,tozi-cn.top,🎯 直接连接
+  - DOMAIN-SUFFIX,tulipsport.com,🎯 直接连接
+  - DOMAIN-SUFFIX,tumukaoyan.com,🎯 直接连接
+  - DOMAIN-SUFFIX,tuxing.art,🎯 直接连接
+  - DOMAIN-SUFFIX,twinkstar.com,🎯 直接连接
+  - DOMAIN-SUFFIX,u-carloan.com,🎯 直接连接
+  - DOMAIN-SUFFIX,uascent-iot.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ugdocker.link,🎯 直接连接
+  - DOMAIN-SUFFIX,ulife.group,🎯 直接连接
+  - DOMAIN-SUFFIX,vbkhk.com,🎯 直接连接
+  - DOMAIN-SUFFIX,vbkr.com,🎯 直接连接
+  - DOMAIN-SUFFIX,vbkrhk.com,🎯 直接连接
+  - DOMAIN-SUFFIX,vclbroker.com,🎯 直接连接
+  - DOMAIN-SUFFIX,vclbrokers.com,🎯 直接连接
+  - DOMAIN-SUFFIX,vcltrade.com,🎯 直接连接
+  - DOMAIN-SUFFIX,vgogbuy.com,🎯 直接连接
+  - DOMAIN-SUFFIX,warmheart.top,🎯 直接连接
+  - DOMAIN-SUFFIX,webs.vc,🎯 直接连接
+  - DOMAIN-SUFFIX,wenyi188.com,🎯 直接连接
+  - DOMAIN-SUFFIX,wewillpro.com,🎯 直接连接
+  - DOMAIN-SUFFIX,wjx.top,🎯 直接连接
+  - DOMAIN-SUFFIX,wlcdn88.com,🎯 直接连接
+  - DOMAIN-SUFFIX,wwwh.eu.org,🎯 直接连接
+  - DOMAIN-SUFFIX,x86pi.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xbgjw.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xdqtech.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xdtool.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xiankabao.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xiaochuanyun.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xiberia.net,🎯 直接连接
+  - DOMAIN-SUFFIX,xinghaiwaimai.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xixih.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,xn--4kq62z5rby2qupq9ub.top,🎯 直接连接
+  - DOMAIN-SUFFIX,xopenbeta.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xxir.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xxrsm.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xzsckj.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xzzhtc.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ydayc.com,🎯 直接连接
+  - DOMAIN-SUFFIX,yiso.fun,🎯 直接连接
+  - DOMAIN-SUFFIX,yixc.com,🎯 直接连接
+  - DOMAIN-SUFFIX,yongyu.xyz,🎯 直接连接
+  - DOMAIN-SUFFIX,yooc.me,🎯 直接连接
+  - DOMAIN-SUFFIX,yunzuoye.net,🎯 直接连接
+  - DOMAIN-SUFFIX,yyshub.top,🎯 直接连接
+  - DOMAIN-SUFFIX,yzcsoft.com,🎯 直接连接
+  - DOMAIN-SUFFIX,z6e.com,🎯 直接连接
+  - DOMAIN-SUFFIX,zctnet.top,🎯 直接连接
+  - DOMAIN-SUFFIX,zeekrline.com,🎯 直接连接
+  - DOMAIN-SUFFIX,zhi10.com,🎯 直接连接
+  - DOMAIN-SUFFIX,zhixingyunke.com,🎯 直接连接
+  - DOMAIN-SUFFIX,zhongancloud.com,🎯 直接连接
+  - DOMAIN-SUFFIX,zjxhedu.com,🎯 直接连接
+  - DOMAIN-SUFFIX,znnu.com,🎯 直接连接
+  - DOMAIN-SUFFIX,znztv.com,🎯 直接连接
+  - DOMAIN-SUFFIX,zsytit.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ztytech.com,🎯 直接连接
+  - DOMAIN-SUFFIX,zuobiao.press,🎯 直接连接
+  - IP-CIDR,108.174.48.100/32,🎯 直接连接,no-resolve
+  - IP-CIDR,218.78.7.16/32,🎯 直接连接,no-resolve
+  - IP-CIDR,5.5.5.5/32,🎯 直接连接,no-resolve
+  - IP-CIDR,98.126.27.164/32,🎯 直接连接,no-resolve
+  - DOMAIN-SUFFIX,cm.steampowered.com,🎯 直接连接
+  - DOMAIN-SUFFIX,steamcdn-a.akamaihd.net,🎯 直接连接
+  - DOMAIN-SUFFIX,steamserver.net,🎯 直接连接
+  - IP-CIDR,103.10.124.0/23,🎯 直接连接,no-resolve
+  - IP-CIDR,103.28.54.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,146.66.152.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,146.66.155.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,153.254.86.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.224.0/22,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.230.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.232.0/23,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.234.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.236.0/22,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.240.0/23,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.244.0/23,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.246.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.248.0/21,🎯 直接连接,no-resolve
+  - IP-CIDR,162.254.192.0/21,🎯 直接连接,no-resolve
+  - IP-CIDR,185.25.182.0/23,🎯 直接连接,no-resolve
+  - IP-CIDR,190.217.32.0/22,🎯 直接连接,no-resolve
+  - IP-CIDR,192.69.96.0/22,🎯 直接连接,no-resolve
+  - IP-CIDR,205.185.194.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,205.196.6.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,208.64.200.0/22,🎯 直接连接,no-resolve
+  - IP-CIDR,208.78.164.0/22,🎯 直接连接,no-resolve
+  - IP-CIDR,45.121.184.0/24,🎯 直接连接,no-resolve
+  
   - GEOSITE,google-cn,🎯 直接连接
   - GEOSITE,category-games@cn,🎯 直接连接
   - RULE-SET,SteamCDN,🎯 直接连接
@@ -320,13 +708,35 @@ rules:
   # 强制代理（GFW）
   - RULE-SET,Proxy,🚀 强制代理
   - RULE-SET,ProxyIP,🚀 强制代理,no-resolve
+  
+  # 自定义强制代理规则（来自 yx_ini.yaml）
+  - DOMAIN-SUFFIX,7pzzv.us,🚀 强制代理
+  - DOMAIN-SUFFIX,arduino.cc,🚀 强制代理
+  - DOMAIN-SUFFIX,clientservices.googleapis.com,🚀 强制代理
+  - DOMAIN-SUFFIX,cloudsync-prod.s3.us-east-1.amazonaws.com,🚀 强制代理
+  - DOMAIN-SUFFIX,dmhy.org,🚀 强制代理
+  - DOMAIN-SUFFIX,googleapis.cn,🚀 强制代理
+  - DOMAIN-SUFFIX,hoyolab.com,🚀 强制代理
+  - DOMAIN-SUFFIX,ip.sb,🚀 强制代理
+  - DOMAIN-SUFFIX,ipify.org,🚀 强制代理
+  - DOMAIN-SUFFIX,mtalk.google.com,🚀 强制代理
+  - DOMAIN-SUFFIX,onedrive.live.com,🚀 强制代理
+  - DOMAIN-SUFFIX,platformio.org,🚀 强制代理
+  - DOMAIN-SUFFIX,services.googleapis.cn,🚀 强制代理
+  - DOMAIN-SUFFIX,stun.playstation.net,🚀 强制代理
+  - DOMAIN-SUFFIX,xn--ngstr-lra8j.com,🚀 强制代理
+  - IP-CIDR,1.0.0.1/32,🚀 强制代理,no-resolve
+  - IP-CIDR,1.1.1.1/32,🚀 强制代理,no-resolve
 
   # 国内域名和IP兜底
-  - GEOSITE,cn,🎯 国内流量
-  - GEOIP,cn,🎯 国内流量,no-resolve
+  - GEOSITE,cn,🎯 直接连接
+  - GEOIP,cn,🎯 直接连接,no-resolve
 
   # 非标端口
   - RULE-SET,CustomPort,🔀 非标端口
+  - DST-PORT,1-79,🔀 非标端口
+  - DST-PORT,81-442,🔀 非标端口
+  - DST-PORT,444-65535,🔀 非标端口
 
   # 补充规则 - PayPal和其他
   - RULE-SET,PayPal,💶 PayPal
