@@ -53,10 +53,10 @@ subconverter
 
 的重写配置文件,之前旧版已归档
 
-## 增加~~Mihimo~~/Sparkle在线覆写yaml文件
-放于~~Mihimo~~/Sparkle文件夹下，方便修改
+## 增加~~Mihimo~~/~~Sparkle~~/Clash-Party在线覆写yaml文件
+放于MihimoParty文件夹下，方便修改
 
-## ~~Mihimo~~/Sparkle使用中无法访问微软商店问题:
+## ~~Mihimo~~/~~Sparkle~~/Clash-Party使用中无法访问微软商店问题:
 ***打开UWP工具勾选Microsoft Store相关内容即可***
 
 ***XBOX相关内容同理***
@@ -73,7 +73,7 @@ github地址:
 
 ## 增加使用去广告插件的记录
 
-## 增加kodi配置过程,~~修改mihomo为sparkle~~
+## 增加kodi配置过程
 
 ## 增加小闪存模式下openclash的文件备份,否则一旦更新系统就会丢失
 
