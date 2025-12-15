@@ -1,0 +1,855 @@
+# ==================== 锚点配置 ====================
+# 代理提供者模板 - 订阅源基础配置
+BaseProvider: &BaseProvider {type: http, interval: 86400, proxy: DIRECT, health-check: {enable: true, url: 'https://www.google.com/generate_204', interval: 300}, filter: '^(?!.*(群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author))'}
+
+# 策略组类型模板 - 定义不同的策略组基础配置
+BaseFB: &BaseFB       {type: fallback, interval: 200, lazy: true, url: 'https://www.google.com/generate_204'}
+BaseLB: &BaseLB       {type: load-balance, interval: 200, lazy: true, url: 'https://www.google.com/generate_204'}
+BaseSmart: &BaseSmart {type: smart, interval: 200, lazy: true, url: 'https://www.google.com/generate_204', hidden: true, uselightgbm: true}
+
+# 节点筛选正则表达式 - 基于地理位置和关键词过滤（根据 yx_riolu.ini 调整）
+# 直连：排除“中转/转发/隧道”等关键词；中转：包含这些关键词
+FilterHK_Direct: &FilterHK_Direct '(?i)^(?=.*(HK|港|Hong Kong|HongKong|hongkong|HKG))(?!.*(中转|转发|隧道)).*'
+FilterHK_Transit: &FilterHK_Transit '(?i)^(?=.*(HK|港|Hong Kong|HongKong|hongkong|HKG))(?=.*(中转|转发|隧道)).*'
+FilterTW_Direct: &FilterTW_Direct '(?i)^(?=.*(TW|台|新北|彰化|Taiwan|TPE|TSA|KHH))(?!.*(中转|转发|隧道)).*'
+FilterTW_Transit: &FilterTW_Transit '(?i)^(?=.*(TW|台|新北|彰化|Taiwan|TPE|TSA|KHH))(?=.*(中转|转发|隧道)).*'
+FilterSG_Direct: &FilterSG_Direct '(?i)^(?=.*(SG|新加坡|坡|狮城|Singapore|SIN|XSP))(?!.*(中转|转发|隧道)).*'
+FilterSG_Transit: &FilterSG_Transit '(?i)^(?=.*(SG|新加坡|坡|狮城|Singapore|SIN|XSP))(?=.*(中转|转发|隧道)).*'
+FilterJP_Direct: &FilterJP_Direct '(?i)^(?=.*(JP|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|Japan|NRT|HND|KIX|CTS|FUK))(?!.*(中转|转发|隧道)).*'
+FilterJP_Transit: &FilterJP_Transit '(?i)^(?=.*(JP|日本|川日|东京|大阪|泉日|埼玉|沪日|深日|Japan|NRT|HND|KIX|CTS|FUK))(?=.*(中转|转发|隧道)).*'
+FilterUS: &FilterUS '(?i).*(US|美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|United States|USA|SJC|JFK|LAX|ORD|ATL|DFW|SFO|MIA|SEA|IAD).*'
+FilterAL: &FilterAL '^(?!.*(DIRECT|直接连接|群|邀请|返利|循环|官网|客服|网站|网址|获取|订阅|流量|到期|机场|下次|版本|官址|备用|过期|已用|联系|邮箱|工单|贩卖|通知|倒卖|防止|国内|地址|频道|无法|说明|使用|提示|特别|访问|支持|教程|关注|更新|作者|加入|USE|USED|TOTAL|EXPIRE|EMAIL|Panel|Channel|Author))'
+
+# 策略组代理列表模板 - 预定义的代理节点优先级排序（根据 yx_riolu.ini 调整）
+SelectDC: &SelectDC {type: select, proxies: [🎯 直接连接, 🀄 香港直连, 🀄 香港中转, 🇨🇳 台湾直连, 🇨🇳 台湾中转, 🗾 日本直连, 🗾 日本中转, ➕ 新加坡直连, ➕ 新加坡中转, 🗽 美国节点]}
+SelectHK: &SelectHK {type: select, proxies: [🀄 香港直连, 🀄 香港中转, 🇨🇳 台湾直连, 🇨🇳 台湾中转, ➕ 新加坡直连, ➕ 新加坡中转, 🗾 日本直连, 🗾 日本中转, 🗽 美国节点, 🎯 直接连接]}
+SelectTW: &SelectTW {type: select, proxies: [🇨🇳 台湾直连, 🇨🇳 台湾中转, 🀄 香港直连, 🀄 香港中转, ➕ 新加坡直连, ➕ 新加坡中转, 🗾 日本直连, 🗾 日本中转, 🗽 美国节点, 🎯 直接连接]}
+SelectSG: &SelectSG {type: select, proxies: [➕ 新加坡直连, ➕ 新加坡中转, 🀄 香港直连, 🀄 香港中转, 🇨🇳 台湾直连, 🇨🇳 台湾中转, 🗾 日本直连, 🗾 日本中转, 🗽 美国节点, 🎯 直接连接]}
+
+# ==================== 代理提供者 ====================
+proxy-providers:
+  # 优质订阅源 - 优质节点集合，使用时请修改
+  优质服务商: {<<: *BaseProvider, url: '订阅地址', override: {additional-prefix: '[优] '}}
+  # 备用订阅源 - 次优节点集合，使用时请修改（单服务商可注释）
+  # 备用服务商: {<<: *BaseProvider, url: '备用订阅源地址', override: {additional-prefix: '[备] '}}
+  # 落地订阅源 - 落地服务连接，使用时请修改（单服务商可注释）
+  # 落地服务商: {<<: *BaseProvider, url: '落地订阅源地址', override: {additional-prefix: '[中] ', dialer-proxy: 中转服务}}
+
+# ==================== 监听器 ====================
+listeners:
+  # Mixed监听器 - 分地区专用端口 玩法：本地浏览器插件或手机APP配置代理，实现分地区访问
+  - {name: MIXED-HK, type: mixed, port: 50000, proxy: '🀄 香港中转'}
+  - {name: MIXED-TW, type: mixed, port: 50001, proxy: '🇨🇳 台湾中转'}
+  - {name: MIXED-SG, type: mixed, port: 50002, proxy: '➕ 新加坡中转'}
+  - {name: MIXED-JP, type: mixed, port: 50003, proxy: '🗾 日本中转'}
+  - {name: MIXED-US, type: mixed, port: 50004, proxy: '🗽 美国节点'}
+
+# ==================== 核心配置 ====================
+# 基础配置
+mode: rule
+port: 7890
+socks-port: 7891
+redir-port: 7892
+mixed-port: 7893
+tproxy-port: 7895
+ipv6: false
+allow-lan: true
+unified-delay: true
+tcp-concurrent: true
+log-level: warning
+bind-address: '*'
+find-process-mode: 'always'
+global-client-fingerprint: chrome
+keep-alive-interval: 15
+keep-alive-idle: 600
+
+# 实验性功能
+experimental:
+  quic-go-disable-gso: true  
+
+# 配置存储
+profile:
+  store-selected: true
+  store-fake-ip: true
+
+# 流量嗅探
+sniffer:
+  enable: true
+  parse-pure-ip: true
+  force-dns-mapping: true
+  override-destination: true
+
+
+  force-domain:
+    - "+.netflix.com"
+    - "+.nflxvideo.net"
+    - "+.amazonaws.com"
+    - "+.media.dssott.com"
+    - "+.hbo.com"
+    - "+.hbomaxcdn.com"
+    - "+.tiktok.com"
+
+
+  skip-domain:
+    - "Mijia Cloud"
+    - "+.push.apple.com"
+    - "+.apple.com"
+    - "+.oray.com"
+    - "+.sunlogin.net"
+    - "+.crashlytics.com"
+
+
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+
+    TLS:
+      ports: [443, 8443]
+      override-destination: true
+
+    QUIC:
+      ports: [443, 8443]
+      override-destination: true
+
+      skip-domain:
+        - "Mijia Cloud"
+        - "+.push.apple.com"
+        - "+.apple.com"
+        - "+.oray.com"
+        - "+.sunlogin.net"
+        - "+.crashlytics.com"
+
+
+
+# TUN模式配置
+tun:
+  enable: false
+  stack: mixed
+  dns-hijack:
+    - "any:53"
+    - "tcp://any:53"
+  auto-route: true
+  auto-redirect: true
+  auto-detect-interface: true
+    
+# DNS配置 - 完整防泄露版本
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  ipv6: false
+  respect-rules: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 28.0.0.1/8
+  fake-ip-filter-mode: blacklist
+  default-nameserver:
+    - tls://223.5.5.5
+    - tls://223.6.6.6
+  proxy-server-nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+  direct-nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+  nameserver:
+    - https://8.8.8.8/dns-query#RULES&ecs=223.5.5.0/24
+  fake-ip-filter:
+    - "*"
+    - "+.lan"
+    - "+.local"
+    - "rule-set:Private,Direct,China"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
+    - "time.*.com"
+    - "+.market.xiaomi.com"
+
+# ==================== 代理策略组 ====================
+proxy-groups:
+  # 应用策略层 - Select策略组，支持多场景应用优化（根据 yx_riolu.ini 调整）
+  - {name: 🚀 全部节点,  type: select, include-all: true}
+  - {name: 🚀 强制代理,  <<: *SelectHK}
+  - {name: 🚀 GitHub,  <<: *SelectHK}
+  - {name: 💬 即时通讯,  <<: *SelectHK}
+  - {name: 🌐 社交媒体,  <<: *SelectHK}
+  - {name: 🤖 GPT-AI,  <<: *SelectSG}
+  - {name: 💬 Copilot,  <<: *SelectHK}
+  - {name: 🎶 TikTok,  <<: *SelectSG}
+  - {name: 📹 YouTube,  <<: *SelectHK}
+  - {name: 🎥 NetDisy,  <<: *SelectHK}
+  - {name: 🎥 HBO,  <<: *SelectHK}
+  - {name: 🎥 PrimeVideo,  <<: *SelectHK}
+  - {name: 🎥 Emby服,  <<: *SelectHK}
+  - {name: 🎻 Spotify,  <<: *SelectHK}
+  - {name: 📺 Bahamut,  <<: *SelectTW}
+  - {name: 🎮 游戏平台,  <<: *SelectDC}
+  - {name: 🎮 Steam,  <<: *SelectDC}
+  - {name: 🌎 国外媒体,  <<: *SelectHK}
+  - {name: 🛒 国外电商,  <<: *SelectHK}
+  - {name: 📢 谷歌FCM,  <<: *SelectDC}
+  - {name: 📢 谷歌服务,  <<: *SelectHK}
+  - {name: 🎥 AppleTV+,  <<: *SelectHK}
+  - {name: 🍎 苹果服务,  <<: *SelectDC}
+  - {name: Ⓜ️ 微软服务,  <<: *SelectDC}
+  - {name: 💶 PayPal,  <<: *SelectHK}
+  - {name: 🚀 网络测试,  <<: *SelectDC}
+  - {name: 🔀 非标端口,  type: select, proxies: [🐟 漏网之鱼, 🎯 直接连接]}
+  - {name: 🐟 漏网之鱼,  <<: *SelectDC}
+  - {name: 🎯 直接连接,  type: select, proxies: [DIRECT], hidden: true}
+
+ # 地理策略层 - url-test 自动选择，根据 yx_riolu.ini 调整
+  - {name: 🀄 香港直连,  type: url-test, use: [优质服务商], filter: *FilterHK_Direct, url: 'http://cp.cloudflare.com/generate_204', interval: 300, tolerance: 50}
+  - {name: 🀄 香港中转,  type: url-test, use: [优质服务商], filter: *FilterHK_Transit, url: 'http://cp.cloudflare.com/generate_204', interval: 300, tolerance: 50}
+  - {name: 🇨🇳 台湾直连,  type: url-test, use: [优质服务商], filter: *FilterTW_Direct, url: 'http://cp.cloudflare.com/generate_204', interval: 300, tolerance: 50}
+  - {name: 🇨🇳 台湾中转,  type: url-test, use: [优质服务商], filter: *FilterTW_Transit, url: 'http://cp.cloudflare.com/generate_204', interval: 300, tolerance: 50}
+  - {name: 🗾 日本直连,  type: url-test, use: [优质服务商], filter: *FilterJP_Direct, url: 'http://cp.cloudflare.com/generate_204', interval: 300, tolerance: 50}
+  - {name: 🗾 日本中转,  type: url-test, use: [优质服务商], filter: *FilterJP_Transit, url: 'http://cp.cloudflare.com/generate_204', interval: 300, tolerance: 50}
+  - {name: ➕ 新加坡直连,  type: url-test, use: [优质服务商], filter: *FilterSG_Direct, url: 'http://cp.cloudflare.com/generate_204', interval: 300, tolerance: 50}
+  - {name: ➕ 新加坡中转,  type: url-test, use: [优质服务商], filter: *FilterSG_Transit, url: 'http://cp.cloudflare.com/generate_204', interval: 300, tolerance: 50}
+  - {name: 🗽 美国节点,  type: url-test, use: [优质服务商], filter: *FilterUS, url: 'http://cp.cloudflare.com/generate_204', interval: 300, tolerance: 50}
+  
+  # 中转服务层 - LoadBalance负载均衡，提供中转服务提升连通性，选用一个或多个服务商做中转，比如 优质服务商，可通过正则表达式，过滤掉不需要的节点，单服务商时可注释掉
+  # - {name: 中转服务,  <<: *BaseLB, use: [优质服务商], filter: 'HK|TW', hidden: true, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin.png}
+
+# ==================== 规则路由 ====================
+# 规则顺序根据 yx_riolu.ini 调整，按照从上往下的顺序遍历，优先命中上位规则
+rules: 
+  # 拦截规则
+  - RULE-SET,Tracking,REJECT
+  - RULE-SET,Advertising,REJECT
+  - RULE-SET,AdvertisingIP,REJECT,no-resolve
+
+  # 本地地址和域名直连
+  - RULE-SET,Private,🎯 直接连接
+  - RULE-SET,PrivateIP,🎯 直接连接,no-resolve
+  - RULE-SET,Direct,🎯 直接连接
+  - RULE-SET,CustomDirect,🎯 直接连接
+  
+  # 自定义直连规则（来自 yx_ini.yaml）
+  - DOMAIN-KEYWORD,m-team,🎯 直接连接
+  - DOMAIN-KEYWORD,quickconnect,🎯 直接连接
+  - DOMAIN-KEYWORD,synology,🎯 直接连接
+  - DOMAIN-SUFFIX,03241119.xyz,🎯 直接连接
+  - DOMAIN-SUFFIX,112114.xyz,🎯 直接连接
+  - DOMAIN-SUFFIX,115cdn.de,🎯 直接连接
+  - DOMAIN-SUFFIX,1996999.xyz,🎯 直接连接
+  - DOMAIN-SUFFIX,204cloud.com,🎯 直接连接
+  - DOMAIN-SUFFIX,3d-apollo.com,🎯 直接连接
+  - DOMAIN-SUFFIX,3dwhere.com,🎯 直接连接
+  - DOMAIN-SUFFIX,4399zmxy.com,🎯 直接连接
+  - DOMAIN-SUFFIX,51wanxue.com,🎯 直接连接
+  - DOMAIN-SUFFIX,51zmt.top,🎯 直接连接
+  - DOMAIN-SUFFIX,52jiawei.com,🎯 直接连接
+  - DOMAIN-SUFFIX,52met.com,🎯 直接连接
+  - DOMAIN-SUFFIX,52muban.com,🎯 直接连接
+  - DOMAIN-SUFFIX,55555.ink,🎯 直接连接
+  - DOMAIN-SUFFIX,657192.com,🎯 直接连接
+  - DOMAIN-SUFFIX,6v520.net,🎯 直接连接
+  - DOMAIN-SUFFIX,737698.xyz,🎯 直接连接
+  - DOMAIN-SUFFIX,7sef.com,🎯 直接连接
+  - DOMAIN-SUFFIX,86656.net,🎯 直接连接
+  - DOMAIN-SUFFIX,900cha.com,🎯 直接连接
+  - DOMAIN-SUFFIX,985hezi.com,🎯 直接连接
+  - DOMAIN-SUFFIX,998tool.com,🎯 直接连接
+  - DOMAIN-SUFFIX,adobe.com,🎯 直接连接
+  - DOMAIN-SUFFIX,afeica.com,🎯 直接连接
+  - DOMAIN-SUFFIX,afuns.me,🎯 直接连接
+  - DOMAIN-SUFFIX,aichangbaishan.com,🎯 直接连接
+  - DOMAIN-SUFFIX,aistudio-app.com,🎯 直接连接
+  - DOMAIN-SUFFIX,akamaihd.net,🎯 直接连接
+  - DOMAIN-SUFFIX,akamaized.net,🎯 直接连接
+  - DOMAIN-SUFFIX,aloys233.top,🎯 直接连接
+  - DOMAIN-SUFFIX,antping.com,🎯 直接连接
+  - DOMAIN-SUFFIX,anycubic.com,🎯 直接连接
+  - DOMAIN-SUFFIX,api.myip.com,🎯 直接连接
+  - DOMAIN-SUFFIX,armvm.com,🎯 直接连接
+  - DOMAIN-SUFFIX,atticus.vip,🎯 直接连接
+  - DOMAIN-SUFFIX,baiyishequ.com,🎯 直接连接
+  - DOMAIN-SUFFIX,bangumi.tv,🎯 直接连接
+  - DOMAIN-SUFFIX,bdcb.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,belimked.com,🎯 直接连接
+  - DOMAIN-SUFFIX,bgm.tv,🎯 直接连接
+  - DOMAIN-SUFFIX,biandangroup.com,🎯 直接连接
+  - DOMAIN-SUFFIX,biaoda.me,🎯 直接连接
+  - DOMAIN-SUFFIX,bochk.com,🎯 直接连接
+  - DOMAIN-SUFFIX,boyuemobile.com,🎯 直接连接
+  - DOMAIN-SUFFIX,bsbsb.top,🎯 直接连接
+  - DOMAIN-SUFFIX,canghaiip.com,🎯 直接连接
+  - DOMAIN-SUFFIX,cdn.ist,🎯 直接连接
+  - DOMAIN-SUFFIX,centbrowser.net,🎯 直接连接
+  - DOMAIN-SUFFIX,cg3da.com,🎯 直接连接
+  - DOMAIN-SUFFIX,chaxunjiao.com,🎯 直接连接
+  - DOMAIN-SUFFIX,chaz.fun,🎯 直接连接
+  - DOMAIN-SUFFIX,checkip.dyndns.org,🎯 直接连接
+  - DOMAIN-SUFFIX,checkipv6.dyndns.org,🎯 直接连接
+  - DOMAIN-SUFFIX,chenyuxia.com,🎯 直接连接
+  - DOMAIN-SUFFIX,cheriexsky.love,🎯 直接连接
+  - DOMAIN-SUFFIX,cheshire.top,🎯 直接连接
+  - DOMAIN-SUFFIX,chii.in,🎯 直接连接
+  - DOMAIN-SUFFIX,chinatle.com,🎯 直接连接
+  - DOMAIN-SUFFIX,chujingapp.com,🎯 直接连接
+  - DOMAIN-SUFFIX,clivia.fun,🎯 直接连接
+  - DOMAIN-SUFFIX,cn-music.mefun.vip,🎯 直接连接
+  - DOMAIN-SUFFIX,cnb.space,🎯 直接连接
+  - DOMAIN-SUFFIX,codeloop.top,🎯 直接连接
+  - DOMAIN-SUFFIX,coffee-iot.com,🎯 直接连接
+  - DOMAIN-SUFFIX,congmiqq.com,🎯 直接连接
+  - DOMAIN-SUFFIX,coros.com,🎯 直接连接
+  - DOMAIN-SUFFIX,crtyhr.com,🎯 直接连接
+  - DOMAIN-SUFFIX,day.app,🎯 直接连接
+  - DOMAIN-SUFFIX,dcgstd.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ddsrem.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ddzn.tech,🎯 直接连接
+  - DOMAIN-SUFFIX,dell.com,🎯 直接连接
+  - DOMAIN-SUFFIX,dhub.kubesre.xyz,🎯 直接连接
+  - DOMAIN-SUFFIX,dingdingzn.com,🎯 直接连接
+  - DOMAIN-SUFFIX,diyiedu.com,🎯 直接连接
+  - DOMAIN-SUFFIX,docker.1panel.live,🎯 直接连接
+  - DOMAIN-SUFFIX,docker.kejilion.pro,🎯 直接连接
+  - DOMAIN-SUFFIX,docker.unsee.tech,🎯 直接连接
+  - DOMAIN-SUFFIX,dockerpull.org,🎯 直接连接
+  - DOMAIN-SUFFIX,dockerpull.pw,🎯 直接连接
+  - DOMAIN-SUFFIX,dothantech.com,🎯 直接连接
+  - DOMAIN-SUFFIX,douqq.com,🎯 直接连接
+  - DOMAIN-SUFFIX,drvceo.com,🎯 直接连接
+  - DOMAIN-SUFFIX,dskj-ops.com,🎯 直接连接
+  - DOMAIN-SUFFIX,dushe1.app,🎯 直接连接
+  - DOMAIN-SUFFIX,easytier.top,🎯 直接连接
+  - DOMAIN-SUFFIX,einfo-tech.com,🎯 直接连接
+  - DOMAIN-SUFFIX,englibrary.com,🎯 直接连接
+  - DOMAIN-SUFFIX,epg.aptv.app,🎯 直接连接
+  - DOMAIN-SUFFIX,epg.v1.mk,🎯 直接连接
+  - DOMAIN-SUFFIX,everdrawing.com,🎯 直接连接
+  - DOMAIN-SUFFIX,feihengip.com,🎯 直接连接
+  - DOMAIN-SUFFIX,feizhiyi.com,🎯 直接连接
+  - DOMAIN-SUFFIX,fengsutb.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ffhome.com,🎯 直接连接
+  - DOMAIN-SUFFIX,fjpit.com,🎯 直接连接
+  - DOMAIN-SUFFIX,flingtrainer.com,🎯 直接连接
+  - DOMAIN-SUFFIX,fofuai.com,🎯 直接连接
+  - DOMAIN-SUFFIX,fowep.com,🎯 直接连接
+  - DOMAIN-SUFFIX,freetv.top,🎯 直接连接
+  - DOMAIN-SUFFIX,frp-ski.com,🎯 直接连接
+  - DOMAIN-SUFFIX,fssbcc.top,🎯 直接连接
+  - DOMAIN-SUFFIX,fsytss.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ft07.com,🎯 直接连接
+  - DOMAIN-SUFFIX,fuziche.com,🎯 直接连接
+  - DOMAIN-SUFFIX,fzvcolco.com,🎯 直接连接
+  - DOMAIN-SUFFIX,fzwqq.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gaishitongshu.com,🎯 直接连接
+  - DOMAIN-SUFFIX,game.maj-soul.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gangtise.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gaojiua.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gdcucc.v1.mk,🎯 直接连接
+  - DOMAIN-SUFFIX,geektool.top,🎯 直接连接
+  - DOMAIN-SUFFIX,ggbond.org,🎯 直接连接
+  - DOMAIN-SUFFIX,gh-proxy.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gh.con.sh,🎯 直接连接
+  - DOMAIN-SUFFIX,gh.ddlc.top,🎯 直接连接
+  - DOMAIN-SUFFIX,gh.llkk.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,ghfast.top,🎯 直接连接
+  - DOMAIN-SUFFIX,ghoxz.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ghp.ci,🎯 直接连接
+  - DOMAIN-SUFFIX,ghproxy.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,ghproxy.cfd,🎯 直接连接
+  - DOMAIN-SUFFIX,ghps.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,girigirilove.com,🎯 直接连接
+  - DOMAIN-SUFFIX,git.886.be,🎯 直接连接
+  - DOMAIN-SUFFIX,github.abskoop.workers.dev,🎯 直接连接
+  - DOMAIN-SUFFIX,github.boki.moe,🎯 直接连接
+  - DOMAIN-SUFFIX,github.moeyy.xyz,🎯 直接连接
+  - DOMAIN-SUFFIX,github.site,🎯 直接连接
+  - DOMAIN-SUFFIX,github.store,🎯 直接连接
+  - DOMAIN-SUFFIX,giveup.top,🎯 直接连接
+  - DOMAIN-SUFFIX,gjtool.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gmoj.net,🎯 直接连接
+  - DOMAIN-SUFFIX,gmya.net,🎯 直接连接
+  - DOMAIN-SUFFIX,goalmapapp.com,🎯 直接连接
+  - DOMAIN-SUFFIX,goka.top,🎯 直接连接
+  - DOMAIN-SUFFIX,googoc.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gootho.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gseen.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gsgltz.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gsjkjt.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gsnhcg.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gsstic.com,🎯 直接连接
+  - DOMAIN-SUFFIX,gxnnjidingkeji.top,🎯 直接连接
+  - DOMAIN-SUFFIX,gzybao.com,🎯 直接连接
+  - DOMAIN-SUFFIX,halvie.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ham.xin,🎯 直接连接
+  - DOMAIN-SUFFIX,haoxueche.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hbcof.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hbctic.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hdbz.net,🎯 直接连接
+  - DOMAIN-SUFFIX,hexiny.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hf-mirror.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hijin.vip,🎯 直接连接
+  - DOMAIN-SUFFIX,hnxzctec.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hsbc.com.hk,🎯 直接连接
+  - DOMAIN-SUFFIX,hstbroker.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hszq6.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hub.crdz.gq,🎯 直接连接
+  - DOMAIN-SUFFIX,hub.gitmirror.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hub.rat.dev,🎯 直接连接
+  - DOMAIN-SUFFIX,hub.xdark.top,🎯 直接连接
+  - DOMAIN-SUFFIX,huikao8.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hwbim.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hwjianmo.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hwzuku.com,🎯 直接连接
+  - DOMAIN-SUFFIX,hzlawyer.net,🎯 直接连接
+  - DOMAIN-SUFFIX,hzqsn.com,🎯 直接连接
+  - DOMAIN-SUFFIX,icvcs.com,🎯 直接连接
+  - DOMAIN-SUFFIX,idsduf.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ifconfig.co,🎯 直接连接
+  - DOMAIN-SUFFIX,ifengmap.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ifish7.com,🎯 直接连接
+  - DOMAIN-SUFFIX,igpsport.com,🎯 直接连接
+  - DOMAIN-SUFFIX,imacos.top,🎯 直接连接
+  - DOMAIN-SUFFIX,immortalwrt.org,🎯 直接连接
+  - DOMAIN-SUFFIX,iotrix.net,🎯 直接连接
+  - DOMAIN-SUFFIX,ip159.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ip6.seeip.org,🎯 直接连接
+  - DOMAIN-SUFFIX,ipapi.co,🎯 直接连接
+  - DOMAIN-SUFFIX,ipshu.com,🎯 直接连接
+  - DOMAIN-SUFFIX,istoreos.com,🎯 直接连接
+  - DOMAIN-SUFFIX,itptg.com,🎯 直接连接
+  - DOMAIN-SUFFIX,jfjt.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,jh96095.com,🎯 直接连接
+  - DOMAIN-SUFFIX,jingheiot.com,🎯 直接连接
+  - DOMAIN-SUFFIX,jiqw.com,🎯 直接连接
+  - DOMAIN-SUFFIX,jsdelivr.net,🎯 直接连接
+  - DOMAIN-SUFFIX,julebu.co,🎯 直接连接
+  - DOMAIN-SUFFIX,jxjktzjt.com,🎯 直接连接
+  - DOMAIN-SUFFIX,jxpp.com,🎯 直接连接
+  - DOMAIN-SUFFIX,kaijiejinrong.com,🎯 直接连接
+  - DOMAIN-SUFFIX,kaspersky-labs.com,🎯 直接连接
+  - DOMAIN-SUFFIX,kaspersky.com,🎯 直接连接
+  - DOMAIN-SUFFIX,keyoo.com,🎯 直接连接
+  - DOMAIN-SUFFIX,kgithub.com,🎯 直接连接
+  - DOMAIN-SUFFIX,kit327.com,🎯 直接连接
+  - DOMAIN-SUFFIX,kmeila.com,🎯 直接连接
+  - DOMAIN-SUFFIX,kuaicha888.com,🎯 直接连接
+  - DOMAIN-SUFFIX,kyarucloud.moe,🎯 直接连接
+  - DOMAIN-SUFFIX,lanyun.net,🎯 直接连接
+  - DOMAIN-SUFFIX,laogongju.com,🎯 直接连接
+  - DOMAIN-SUFFIX,leelen.com,🎯 直接连接
+  - DOMAIN-SUFFIX,letaoedu.com,🎯 直接连接
+  - DOMAIN-SUFFIX,liunn.com,🎯 直接连接
+  - DOMAIN-SUFFIX,longmenshuju.com,🎯 直接连接
+  - DOMAIN-SUFFIX,lsbj365.com,🎯 直接连接
+  - DOMAIN-SUFFIX,lyihub.com,🎯 直接连接
+  - DOMAIN-SUFFIX,lyilife.com,🎯 直接连接
+  - DOMAIN-SUFFIX,m-team.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,m-team.io,🎯 直接连接
+  - DOMAIN-SUFFIX,manfuz.co,🎯 直接连接
+  - DOMAIN-SUFFIX,mc-user.com,🎯 直接连接
+  - DOMAIN-SUFFIX,meishiffx.online,🎯 直接连接
+  - DOMAIN-SUFFIX,members.3322.org,🎯 直接连接
+  - DOMAIN-SUFFIX,micu.hk,🎯 直接连接
+  - DOMAIN-SUFFIX,mifeng.plus,🎯 直接连接
+  - DOMAIN-SUFFIX,mobai.sbs,🎯 直接连接
+  - DOMAIN-SUFFIX,modelscope.net,🎯 直接连接
+  - DOMAIN-SUFFIX,msftconnecttest.com,🎯 直接连接
+  - DOMAIN-SUFFIX,msftncsi.com,🎯 直接连接
+  - DOMAIN-SUFFIX,mslmc.net,🎯 直接连接
+  - DOMAIN-SUFFIX,mtaokj.com,🎯 直接连接
+  - DOMAIN-SUFFIX,mykuaidi.com,🎯 直接连接
+  - DOMAIN-SUFFIX,myshopex.com,🎯 直接连接
+  - DOMAIN-SUFFIX,naixi.com,🎯 直接连接
+  - DOMAIN-SUFFIX,neihang.net,🎯 直接连接
+  - DOMAIN-SUFFIX,netzz.net,🎯 直接连接
+  - DOMAIN-SUFFIX,nhk.or.jp,🎯 直接连接
+  - DOMAIN-SUFFIX,nicezhuanye.com,🎯 直接连接
+  - DOMAIN-SUFFIX,nn.ci,🎯 直接连接
+  - DOMAIN-SUFFIX,nxog.top,🎯 直接连接
+  - DOMAIN-SUFFIX,oceando.cloud,🎯 直接连接
+  - DOMAIN-SUFFIX,ok321.top,🎯 直接连接
+  - DOMAIN-SUFFIX,onebuygz.com,🎯 直接连接
+  - DOMAIN-SUFFIX,opentrust.net,🎯 直接连接
+  - DOMAIN-SUFFIX,ottai.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ourschool.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,paperang.com,🎯 直接连接
+  - DOMAIN-SUFFIX,pixcheese.com,🎯 直接连接
+  - DOMAIN-SUFFIX,plusde1.younoyes.com,🎯 直接连接
+  - DOMAIN-SUFFIX,plushk1.younoyes.com,🎯 直接连接
+  - DOMAIN-SUFFIX,plushk2.younoyes.com,🎯 直接连接
+  - DOMAIN-SUFFIX,plushk3.younoyes.com,🎯 直接连接
+  - DOMAIN-SUFFIX,plusjp1.younoyes.com,🎯 直接连接
+  - DOMAIN-SUFFIX,plusus1.younoyes.com,🎯 直接连接
+  - DOMAIN-SUFFIX,plusus2.younoyes.com,🎯 直接连接
+  - DOMAIN-SUFFIX,plusus3.younoyes.com,🎯 直接连接
+  - DOMAIN-SUFFIX,pool.ntp.org,🎯 直接连接
+  - DOMAIN-SUFFIX,powershellgallery.com,🎯 直接连接
+  - DOMAIN-SUFFIX,privateapi.xyz,🎯 直接连接
+  - DOMAIN-SUFFIX,ptl.gs,🎯 直接连接
+  - DOMAIN-SUFFIX,ptlgs.org,🎯 直接连接
+  - DOMAIN-SUFFIX,pwithe.com,🎯 直接连接
+  - DOMAIN-SUFFIX,qiankunshopping.com,🎯 直接连接
+  - DOMAIN-SUFFIX,qianuni.com,🎯 直接连接
+  - DOMAIN-SUFFIX,qianxuecloud.com,🎯 直接连接
+  - DOMAIN-SUFFIX,qianxueyunke.com,🎯 直接连接
+  - DOMAIN-SUFFIX,qiaoxuesi.com,🎯 直接连接
+  - DOMAIN-SUFFIX,qinglue.com,🎯 直接连接
+  - DOMAIN-SUFFIX,qmeng.top,🎯 直接连接
+  - DOMAIN-SUFFIX,redenmc.com,🎯 直接连接
+  - DOMAIN-SUFFIX,registry.dockermirror.com,🎯 直接连接
+  - DOMAIN-SUFFIX,rewards.bing.com,🎯 直接连接
+  - DOMAIN-SUFFIX,royqh.net,🎯 直接连接
+  - DOMAIN-SUFFIX,rsfcxq.com,🎯 直接连接
+  - DOMAIN-SUFFIX,saduck.top,🎯 直接连接
+  - DOMAIN-SUFFIX,sanligu.top,🎯 直接连接
+  - DOMAIN-SUFFIX,sapphiretech.com,🎯 直接连接
+  - DOMAIN-SUFFIX,scbaijia.com,🎯 直接连接
+  - DOMAIN-SUFFIX,sct.ftqq.com,🎯 直接连接
+  - DOMAIN-SUFFIX,seaflysoft.com,🎯 直接连接
+  - DOMAIN-SUFFIX,seedpace.com,🎯 直接连接
+  - DOMAIN-SUFFIX,sgtv.ii00.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,shineacc.com,🎯 直接连接
+  - DOMAIN-SUFFIX,shunjing.xin,🎯 直接连接
+  - DOMAIN-SUFFIX,shuqiandiqiu.com,🎯 直接连接
+  - DOMAIN-SUFFIX,shyxhy.com,🎯 直接连接
+  - DOMAIN-SUFFIX,sixloy428.top,🎯 直接连接
+  - DOMAIN-SUFFIX,sksight.com,🎯 直接连接
+  - DOMAIN-SUFFIX,snfox.com,🎯 直接连接
+  - DOMAIN-SUFFIX,snltty.com,🎯 直接连接
+  - DOMAIN-SUFFIX,sptv.ii00.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,ssjj2.com,🎯 直接连接
+  - DOMAIN-SUFFIX,starlink.uno,🎯 直接连接
+  - DOMAIN-SUFFIX,stkfanli.com,🎯 直接连接
+  - DOMAIN-SUFFIX,suyur.com,🎯 直接连接
+  - DOMAIN-SUFFIX,sxlljm.com,🎯 直接连接
+  - DOMAIN-SUFFIX,tailgdd.com,🎯 直接连接
+  - DOMAIN-SUFFIX,tangguobaohe.com,🎯 直接连接
+  - DOMAIN-SUFFIX,tclai.top,🎯 直接连接
+  - DOMAIN-SUFFIX,tcp.pub,🎯 直接连接
+  - DOMAIN-SUFFIX,tcp5.com,🎯 直接连接
+  - DOMAIN-SUFFIX,tcy365.net,🎯 直接连接
+  - DOMAIN-SUFFIX,thinkerride.com,🎯 直接连接
+  - DOMAIN-SUFFIX,tool56.com,🎯 直接连接
+  - DOMAIN-SUFFIX,topwd.top,🎯 直接连接
+  - DOMAIN-SUFFIX,tozi-cn.top,🎯 直接连接
+  - DOMAIN-SUFFIX,tulipsport.com,🎯 直接连接
+  - DOMAIN-SUFFIX,tumukaoyan.com,🎯 直接连接
+  - DOMAIN-SUFFIX,tuxing.art,🎯 直接连接
+  - DOMAIN-SUFFIX,twinkstar.com,🎯 直接连接
+  - DOMAIN-SUFFIX,u-carloan.com,🎯 直接连接
+  - DOMAIN-SUFFIX,uascent-iot.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ugdocker.link,🎯 直接连接
+  - DOMAIN-SUFFIX,ulife.group,🎯 直接连接
+  - DOMAIN-SUFFIX,vbkhk.com,🎯 直接连接
+  - DOMAIN-SUFFIX,vbkr.com,🎯 直接连接
+  - DOMAIN-SUFFIX,vbkrhk.com,🎯 直接连接
+  - DOMAIN-SUFFIX,vclbroker.com,🎯 直接连接
+  - DOMAIN-SUFFIX,vclbrokers.com,🎯 直接连接
+  - DOMAIN-SUFFIX,vcltrade.com,🎯 直接连接
+  - DOMAIN-SUFFIX,vgogbuy.com,🎯 直接连接
+  - DOMAIN-SUFFIX,warmheart.top,🎯 直接连接
+  - DOMAIN-SUFFIX,webs.vc,🎯 直接连接
+  - DOMAIN-SUFFIX,wenyi188.com,🎯 直接连接
+  - DOMAIN-SUFFIX,wewillpro.com,🎯 直接连接
+  - DOMAIN-SUFFIX,wjx.top,🎯 直接连接
+  - DOMAIN-SUFFIX,wlcdn88.com,🎯 直接连接
+  - DOMAIN-SUFFIX,wwwh.eu.org,🎯 直接连接
+  - DOMAIN-SUFFIX,x86pi.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xbgjw.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xdqtech.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xdtool.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xiankabao.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xiaochuanyun.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xiberia.net,🎯 直接连接
+  - DOMAIN-SUFFIX,xinghaiwaimai.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xixih.cc,🎯 直接连接
+  - DOMAIN-SUFFIX,xn--4kq62z5rby2qupq9ub.top,🎯 直接连接
+  - DOMAIN-SUFFIX,xopenbeta.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xxir.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xxrsm.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xzsckj.com,🎯 直接连接
+  - DOMAIN-SUFFIX,xzzhtc.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ydayc.com,🎯 直接连接
+  - DOMAIN-SUFFIX,yiso.fun,🎯 直接连接
+  - DOMAIN-SUFFIX,yixc.com,🎯 直接连接
+  - DOMAIN-SUFFIX,yongyu.xyz,🎯 直接连接
+  - DOMAIN-SUFFIX,yooc.me,🎯 直接连接
+  - DOMAIN-SUFFIX,yunzuoye.net,🎯 直接连接
+  - DOMAIN-SUFFIX,yyshub.top,🎯 直接连接
+  - DOMAIN-SUFFIX,yzcsoft.com,🎯 直接连接
+  - DOMAIN-SUFFIX,z6e.com,🎯 直接连接
+  - DOMAIN-SUFFIX,zctnet.top,🎯 直接连接
+  - DOMAIN-SUFFIX,zeekrline.com,🎯 直接连接
+  - DOMAIN-SUFFIX,zhi10.com,🎯 直接连接
+  - DOMAIN-SUFFIX,zhixingyunke.com,🎯 直接连接
+  - DOMAIN-SUFFIX,zhongancloud.com,🎯 直接连接
+  - DOMAIN-SUFFIX,zjxhedu.com,🎯 直接连接
+  - DOMAIN-SUFFIX,znnu.com,🎯 直接连接
+  - DOMAIN-SUFFIX,znztv.com,🎯 直接连接
+  - DOMAIN-SUFFIX,zsytit.com,🎯 直接连接
+  - DOMAIN-SUFFIX,ztytech.com,🎯 直接连接
+  - DOMAIN-SUFFIX,zuobiao.press,🎯 直接连接
+  - IP-CIDR,108.174.48.100/32,🎯 直接连接,no-resolve
+  - IP-CIDR,218.78.7.16/32,🎯 直接连接,no-resolve
+  - IP-CIDR,5.5.5.5/32,🎯 直接连接,no-resolve
+  - IP-CIDR,98.126.27.164/32,🎯 直接连接,no-resolve
+  - DOMAIN-SUFFIX,cm.steampowered.com,🎯 直接连接
+  - DOMAIN-SUFFIX,steamcdn-a.akamaihd.net,🎯 直接连接
+  - DOMAIN-SUFFIX,steamserver.net,🎯 直接连接
+  - IP-CIDR,103.10.124.0/23,🎯 直接连接,no-resolve
+  - IP-CIDR,103.28.54.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,146.66.152.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,146.66.155.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,153.254.86.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.224.0/22,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.230.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.232.0/23,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.234.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.236.0/22,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.240.0/23,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.244.0/23,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.246.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,155.133.248.0/21,🎯 直接连接,no-resolve
+  - IP-CIDR,162.254.192.0/21,🎯 直接连接,no-resolve
+  - IP-CIDR,185.25.182.0/23,🎯 直接连接,no-resolve
+  - IP-CIDR,190.217.32.0/22,🎯 直接连接,no-resolve
+  - IP-CIDR,192.69.96.0/22,🎯 直接连接,no-resolve
+  - IP-CIDR,205.185.194.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,205.196.6.0/24,🎯 直接连接,no-resolve
+  - IP-CIDR,208.64.200.0/22,🎯 直接连接,no-resolve
+  - IP-CIDR,208.78.164.0/22,🎯 直接连接,no-resolve
+  - IP-CIDR,45.121.184.0/24,🎯 直接连接,no-resolve
+  
+  - GEOSITE,google-cn,🎯 直接连接
+  - GEOSITE,category-games@cn,🎯 直接连接
+  - RULE-SET,SteamCDN,🎯 直接连接
+  - GEOSITE,category-game-platforms-download,🎯 直接连接
+  - GEOSITE,category-public-tracker,🎯 直接连接
+
+  # 即时通讯
+  - GEOSITE,category-communication,💬 即时通讯
+  - RULE-SET,Telegram,💬 即时通讯
+  - GEOIP,telegram,💬 即时通讯,no-resolve
+  - RULE-SET,TelegramIP,💬 即时通讯,no-resolve
+
+  # 社交媒体
+  - GEOSITE,category-social-media-!cn,🌐 社交媒体
+  - RULE-SET,SocialMedia,🌐 社交媒体
+  - GEOIP,twitter,🌐 社交媒体,no-resolve
+  - GEOIP,facebook,🌐 社交媒体,no-resolve
+  - RULE-SET,SocialMediaIP,🌐 社交媒体,no-resolve
+
+  # AI服务
+  - RULE-SET,AI,🤖 GPT-AI
+  - RULE-SET,AIIP,🤖 GPT-AI,no-resolve
+  - RULE-SET,Bing,💬 Copilot
+
+  # GitHub
+  - GEOSITE,github,🚀 GitHub
+  - RULE-SET,GitHub,🚀 GitHub
+
+  # 测速工具
+  - DOMAIN-KEYWORD,speedtest,🚀 网络测试
+  - GEOSITE,category-speedtest,🚀 网络测试
+  - RULE-SET,Speedtest,🚀 网络测试
+
+  # Steam
+  - GEOSITE,steam,🎮 Steam
+  - RULE-SET,Steam,🎮 Steam
+
+  # YouTube
+  - GEOSITE,youtube,📹 YouTube
+  - RULE-SET,YouTube,📹 YouTube
+
+  # AppleTV+
+  - GEOSITE,apple-tvplus,🎥 AppleTV+
+
+  # 苹果服务
+  - RULE-SET,AppleCN,🎯 直接连接
+  - GEOSITE,apple,🍎 苹果服务
+  - RULE-SET,Apple,🍎 苹果服务
+
+  # 微软服务
+  - GEOSITE,microsoft,Ⓜ️ 微软服务
+  - RULE-SET,Microsoft,Ⓜ️ 微软服务
+
+  # 谷歌服务
+  - GEOSITE,googlefcm,📢 谷歌FCM
+  - GEOSITE,google,📢 谷歌服务
+  - RULE-SET,Google,📢 谷歌服务
+  - GEOIP,google,📢 谷歌服务,no-resolve
+  - RULE-SET,GoogleIP,📢 谷歌服务,no-resolve
+
+  # TikTok
+  - GEOSITE,tiktok,🎶 TikTok
+  - RULE-SET,TikTok,🎶 TikTok
+
+  # 流媒体服务
+  - GEOSITE,netflix,🎥 NetDisy
+  - GEOIP,netflix,🎥 NetDisy,no-resolve
+  - RULE-SET,Netflix,🎥 NetDisy
+  - RULE-SET,NetflixIP,🎥 NetDisy,no-resolve
+  - GEOSITE,disney,🎥 NetDisy
+  - RULE-SET,Disney,🎥 NetDisy
+  - GEOSITE,hbo,🎥 HBO
+  - RULE-SET,HBO,🎥 HBO
+  - GEOSITE,primevideo,🎥 PrimeVideo
+  - RULE-SET,PrimeVideo,🎥 PrimeVideo
+  - GEOSITE,category-emby,🎥 Emby服
+  - RULE-SET,Emby,🎥 Emby服
+  - RULE-SET,EmbyIP,🎥 Emby服,no-resolve
+  - GEOSITE,spotify,🎻 Spotify
+  - RULE-SET,Spotify,🎻 Spotify
+
+  # Bahamut
+  - GEOSITE,bahamut,📺 Bahamut
+  - RULE-SET,Bahamut,📺 Bahamut
+
+  # 游戏平台
+  - GEOSITE,category-games,🎮 游戏平台
+  - RULE-SET,Games,🎮 游戏平台
+
+  # 国外媒体和电商
+  - GEOSITE,category-entertainment,🌎 国外媒体
+  - RULE-SET,Streaming,🌎 国外媒体
+  - RULE-SET,StreamingIP,🌎 国外媒体,no-resolve
+  - GEOSITE,category-ecommerce,🛒 国外电商
+  - RULE-SET,Ecommerce,🛒 国外电商
+
+  # 强制代理（GFW）
+  - RULE-SET,Proxy,🚀 强制代理
+  - RULE-SET,ProxyIP,🚀 强制代理,no-resolve
+  
+  # 自定义强制代理规则（来自 yx_ini.yaml）
+  - DOMAIN-SUFFIX,7pzzv.us,🚀 强制代理
+  - DOMAIN-SUFFIX,arduino.cc,🚀 强制代理
+  - DOMAIN-SUFFIX,clientservices.googleapis.com,🚀 强制代理
+  - DOMAIN-SUFFIX,cloudsync-prod.s3.us-east-1.amazonaws.com,🚀 强制代理
+  - DOMAIN-SUFFIX,dmhy.org,🚀 强制代理
+  - DOMAIN-SUFFIX,googleapis.cn,🚀 强制代理
+  - DOMAIN-SUFFIX,hoyolab.com,🚀 强制代理
+  - DOMAIN-SUFFIX,ip.sb,🚀 强制代理
+  - DOMAIN-SUFFIX,ipify.org,🚀 强制代理
+  - DOMAIN-SUFFIX,mtalk.google.com,🚀 强制代理
+  - DOMAIN-SUFFIX,onedrive.live.com,🚀 强制代理
+  - DOMAIN-SUFFIX,platformio.org,🚀 强制代理
+  - DOMAIN-SUFFIX,services.googleapis.cn,🚀 强制代理
+  - DOMAIN-SUFFIX,stun.playstation.net,🚀 强制代理
+  - DOMAIN-SUFFIX,xn--ngstr-lra8j.com,🚀 强制代理
+  - IP-CIDR,1.0.0.1/32,🚀 强制代理,no-resolve
+  - IP-CIDR,1.1.1.1/32,🚀 强制代理,no-resolve
+
+  # 国内域名和IP兜底
+  - GEOSITE,cn,🎯 直接连接
+  - GEOIP,cn,🎯 直接连接,no-resolve
+
+  # 非标端口
+  - RULE-SET,CustomPort,🔀 非标端口
+  - DST-PORT,1-79,🔀 非标端口
+  - DST-PORT,81-442,🔀 非标端口
+  - DST-PORT,444-65535,🔀 非标端口
+
+  # 补充规则 - PayPal和其他
+  - RULE-SET,PayPal,💶 PayPal
+  - RULE-SET,GeolocationCN,🚀 强制代理
+
+  # 漏网之鱼（兜底规则）
+  - MATCH,🐟 漏网之鱼
+
+# ==================== 规则集 ====================
+# 规则集行为模板
+BehaviorDN: &BehaviorDN {type: http, behavior: domain, format: mrs, interval: 86400}
+BehaviorIP: &BehaviorIP {type: http, behavior: ipcidr, format: mrs, interval: 86400}
+
+# 规则集锚点 - 简化配置
+rule-anchor:
+  ip: &ip {type: http, interval: 86400, behavior: ipcidr, format: mrs}
+  domain: &domain {type: http, interval: 86400, behavior: domain, format: mrs}
+  class: &class {type: http, interval: 86400, behavior: classical, format: text}
+
+# 规则提供者（根据 yx_riolu.ini 调整）
+rule-providers: 
+  # 拦截规则
+  Tracking:       {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Tracking.mrs}
+  Advertising:    {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Advertising.mrs} 
+  AdvertisingIP:  {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Advertising.mrs}
+
+  # 直连规则
+  Private:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Private.mrs}
+  PrivateIP:      {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Private.mrs}
+  Direct:         {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Direct.mrs}
+  CustomDirect:   {type: http, behavior: classical, format: yaml, url: https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/refs/heads/main/rule/Custom_Direct_Classical.yaml, interval: 28800}
+  SteamCDN:       {type: http, behavior: classical, format: yaml, url: https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/refs/heads/main/rule/Steam_CDN_Classical.yaml, interval: 28800}
+  CustomPort:     {type: http, behavior: classical, format: yaml, url: https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/refs/heads/main/rule/Custom_Port_Direct.yaml, interval: 28800}
+
+  # 即时通讯
+  Telegram:       {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Telegram.mrs}
+  TelegramIP:     {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Telegram.mrs}
+
+  # 社交媒体
+  SocialMedia:    {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/SocialMedia.mrs}
+  SocialMediaIP:  {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/SocialMedia.mrs}
+
+  # AI服务
+  AI:             {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/AI.mrs}  
+  AIIP:           {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/AI.mrs}
+  Bing:           {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Microsoft.mrs}
+
+  # GitHub
+  GitHub:         {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/GitHub.mrs}
+
+  # 测速工具
+  Speedtest:      {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Speedtest.mrs}
+
+  # Steam
+  Steam:          {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Steam.mrs}
+
+  # YouTube
+  YouTube:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/YouTube.mrs}
+
+  # AppleTV+
+  AppleTV:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Apple.mrs}
+
+  # 苹果服务
+  AppleCN:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/AppleCN.mrs}
+  Apple:          {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Apple.mrs}
+
+  # 微软服务
+  Microsoft:      {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Microsoft.mrs}  
+
+  # 谷歌服务
+  GoogleFCM:      {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Google.mrs}
+  Google:         {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Google.mrs}
+  GoogleIP:       {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Google.mrs}
+
+  # TikTok
+  TikTok:         {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/TikTok.mrs}
+
+  # 流媒体服务
+  Netflix:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Netflix.mrs}
+  NetflixIP:      {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Netflix.mrs}
+  Disney:         {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Disney.mrs}
+  HBO:            {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/HBO.mrs}
+  PrimeVideo:     {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/PrimeVideo.mrs}
+  Emby:           {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Emby.mrs}
+  EmbyIP:         {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Emby.mrs}
+  Spotify:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Spotify.mrs}
+
+  # Bahamut
+  Bahamut:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Bahamut.mrs}
+
+  # 游戏平台
+  Games:          {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Games.mrs}
+
+  # 国外媒体和电商
+  Streaming:      {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Streaming.mrs}  
+  StreamingIP:    {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Streaming.mrs}
+  Ecommerce:      {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Ecommerce.mrs}
+
+  # 强制代理（GFW）
+  Proxy:          {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Proxy.mrs}
+  ProxyIP:        {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Proxy.mrs}
+
+  # 国内流量
+  China:          {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/China.mrs}
+  ChinaIP:        {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/China.mrs}
+
+  # 补充规则 - 来自qiiiyu
+  PayPal:         {<<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.mrs"}
+  GeolocationCN:  {<<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs"}
+# ==================== EOF ====================
