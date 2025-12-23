@@ -56,6 +56,7 @@ sudo bash -c 'umask 077; wg genkey | tee server.key | wg pubkey > server.pub'
 查看生成的密钥：
 
 ```bash
+l
 cat server.key  # 私钥
 cat server.pub  # 公钥
 ```
@@ -115,10 +116,9 @@ sudo systemctl enable wg-quick@wg0
 ```ini
 [Interface]
 PrivateKey = (新增隧道自动生成的私钥,不需要动)
-# 自己设置的ip,后面必须写/24
-Address = 192.168.126.77/24
+# 自己设置的ip,后面一般写/32
+Address = 192.168.126.77/32
 # 服务器端设置网段的网关
-DNS = 192.168.126.1
 MTU = 1380
 
 [Peer]
@@ -148,7 +148,6 @@ sudo nano /etc/wireguard/wg0.conf
 PublicKey = 隧道的公钥
 # 自己设定的本机ip,与客户端一致
 AllowedIPs = 192.168.126.77/32
-PersistentKeepalive = 25
 ```
 
 保存后重载服务：
