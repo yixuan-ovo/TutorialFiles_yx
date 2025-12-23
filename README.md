@@ -85,4 +85,6 @@ github地址:
 
 参考[这个](https://www.reddit.com/r/Windows11/comments/1kgp7ar/cause_and_solution_to_windows_24h2_related/)
 
+## 增加异地组网WireGuard配置教程
+
 # 待续...
