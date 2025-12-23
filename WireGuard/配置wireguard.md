@@ -86,13 +86,23 @@ PostUp   = iptables -A FORWARD -i wg0 -o wg0 -j ACCEPT
 PostDown = iptables -D FORWARD -i wg0 -o wg0 -j ACCEPT
 ```
 
+```
+# 允许 WG 端口进入
+sudo iptables -A INPUT -p udp --dport 51820 -j ACCEPT
+# 允许虚拟网卡转发
+sudo iptables -A FORWARD -i wg0 -j ACCEPT
+sudo iptables -A FORWARD -o wg0 -j ACCEPT
+# 保存
+sudo netfilter-persistent save
+```
+
 ### 5. 启动服务
 
 启动服务，检查是否报错：
 
 ```bash
-sudo wg-quick up wg0
 sudo systemctl enable wg-quick@wg0
+sudo systemctl start wg-quick@wg0
 ```
 
 ## 客户端配置
