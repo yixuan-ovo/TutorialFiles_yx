@@ -11,7 +11,7 @@
 
 ```bash
 sudo apt update
-sudo apt install -y wireguard iptables
+sudo apt install -y wireguard iptables iptables-persistent
 ```
 
 > **注意**：上面命令顺便安装了 iptables，建议安装之前先检查一下服务器有没有自带 iptables：
@@ -31,13 +31,7 @@ wg -v
 编辑系统配置文件：
 
 ```bash
-sudo nano /etc/sysctl.conf
-```
-
-添加以下内容：
-
-```
-net.ipv4.ip_forward = 1
+echo "net.ipv4.ip_forward=1" | sudo tee -a /etc/sysctl.conf
 ```
 
 应用配置：
@@ -75,24 +69,45 @@ sudo nano /etc/wireguard/wg0.conf
 
 ```ini
 [Interface]
-# 网段,可自定义
+# 服务器在虚拟局域网中的 IP,可自定义
 Address = 192.168.126.1/24
-# 监听端口
+
+# WireGuard 监听端口
 ListenPort = 51820
-# 服务器私钥
-PrivateKey = server.key
-# 不做 NAT，只转发
-PostUp   = iptables -A FORWARD -i wg0 -o wg0 -j ACCEPT
-PostDown = iptables -D FORWARD -i wg0 -o wg0 -j ACCEPT
+
+# 填写服务器的私钥 (cat /etc/wireguard/private.key)
+PrivateKey = <YOUR_SERVER_PRIVATE_KEY>
+
+# 【关键】MTU 设置为 1280，防止游戏大数据包分片丢弃导致的 Index Error
+MTU = 1380
+
+# 【关键】转发与 NAT 规则 (根据eth0修改,ip addr查看网卡名)
+
+# 开启时：允许转发并开启 IP 伪装
+PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -A FORWARD -o wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+
+# 关闭时：清理相关规则
+PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -D FORWARD -o wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 ```
 
 ```
-# 允许 WG 端口进入
+# 1. 允许 WireGuard 隧道端口进入 (必须)
 sudo iptables -A INPUT -p udp --dport 51820 -j ACCEPT
-# 允许虚拟网卡转发
+
+# 2. 允许联机工具端口进入 (针对你的直连模式需求)
+sudo iptables -A INPUT -p udp --dport 9050 -j ACCEPT
+
+# 3. 允许虚拟网卡 wg0 的所有入站流量 (可选，但联机最稳)
+sudo iptables -A INPUT -i wg0 -j ACCEPT
+
+# 4. 允许转发规则 (必须，确保 wg0 和 eth0 之间能传数据)
 sudo iptables -A FORWARD -i wg0 -j ACCEPT
 sudo iptables -A FORWARD -o wg0 -j ACCEPT
-# 保存
+
+# 5. 如果开启了UFW，防止底层 iptables 规则不会被上层的 UFW 策略拦截。
+sudo ufw default allow routed
+
+# 6. 永久保存这些规则 (确保重启服务器后依然生效)
 sudo netfilter-persistent save
 ```
 
@@ -126,8 +141,8 @@ sudo systemctl start wg-quick@wg0
 ```ini
 [Interface]
 PrivateKey = (新增隧道自动生成的私钥,不需要动)
-# 自己设置的ip,后面一般写/32
-Address = 192.168.126.77/32
+# 自己设置的ip,后面一般写/24
+Address = 192.168.126.77/24
 # 服务器端设置网段的网关
 MTU = 1380
 
@@ -177,6 +192,8 @@ sudo systemctl restart wg-quick@wg0
 如果需要添加其他用户，复制并修改公钥和 IP 即可，服务器端也需要添加对应的 IP。
 
 ## 防火墙配置
+
+Windows 防火墙： 入站规则放行 UDP 9050。
 
 如果都能 ping 通 `.1`，但是互相 ping 不通，需要在电脑防火墙进行配置：
 
