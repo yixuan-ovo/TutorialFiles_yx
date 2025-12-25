@@ -25,7 +25,7 @@ SelectSG: &SelectSG {type: select, proxies: [➕ 新加坡节点, 🀄 香港节
 # ==================== 代理提供者 ====================
 proxy-providers:
   # 优质订阅源 - 优质节点集合，使用时请修改
-  优质服务商: {<<: *BaseProvider, url: '订阅地址', override: {additional-prefix: '[优] '}}
+  优质服务商: {<<: *BaseProvider, url: '订阅地址', override: {additional-prefix: '[ytq] '}}
   # 备用订阅源 - 次优节点集合，使用时请修改（单服务商可注释）
   # 备用服务商: {<<: *BaseProvider, url: '备用订阅源地址', override: {additional-prefix: '[备] '}}
   # 落地订阅源 - 落地服务连接，使用时请修改（单服务商可注释）
@@ -76,7 +76,6 @@ sniffer:
   force-dns-mapping: true
   override-destination: true
 
-
   force-domain:
     - "+.netflix.com"
     - "+.nflxvideo.net"
@@ -86,7 +85,6 @@ sniffer:
     - "+.hbomaxcdn.com"
     - "+.tiktok.com"
 
-
   skip-domain:
     - "Mijia Cloud"
     - "+.push.apple.com"
@@ -94,7 +92,6 @@ sniffer:
     - "+.oray.com"
     - "+.sunlogin.net"
     - "+.crashlytics.com"
-
 
   sniff:
     HTTP:
@@ -151,14 +148,22 @@ dns:
   nameserver:
     - https://8.8.8.8/dns-query#RULES&ecs=223.5.5.0/24
   fake-ip-filter:
-    - "*"
+    # - "*"
     - "+.lan"
     - "+.local"
-    - "rule-set:Private,Direct,China"
+    - "rule-set:Private"
+    - "rule-set:Direct"
+    - "rule-set:China"
+    - "rule-set:AppleCN"
     - "+.msftconnecttest.com"
     - "+.msftncsi.com"
     - "time.*.com"
     - "+.market.xiaomi.com"
+    # 避免系统级连接问题
+    - "rule-set:SteamCDN"
+    - "+.stun.*.*"
+    - "+.stun.*.*.*"
+    - "gv.2beconnected.com" # 某些同步服务
 
 # ==================== 代理策略组 ====================
 proxy-groups:
@@ -179,7 +184,7 @@ proxy-groups:
   - {name: 🎻 Spotify,  <<: *SelectHK}
   - {name: 📺 Bahamut,  <<: *SelectTW}
   - {name: 🎮 游戏平台,  <<: *SelectDC}
-  - {name: 🎮 Steam,  <<: *SelectDC}
+  - {name: 🎮 Steam,  <<: *SelectHK}
   - {name: 🌎 国外媒体,  <<: *SelectHK}
   - {name: 🛒 国外电商,  <<: *SelectHK}
   - {name: 📢 谷歌FCM,  <<: *SelectDC}
@@ -191,7 +196,7 @@ proxy-groups:
   - {name: 🚀 网络测试,  <<: *SelectDC}
   - {name: 🔀 非标端口,  type: select, proxies: [🐟 漏网之鱼, 🎯 直接连接]}
   - {name: 🐟 漏网之鱼,  <<: *SelectDC}
-  - {name: 🎯 直接连接,  type: select, proxies: [DIRECT], hidden: true}
+  - {name: 🎯 直接连接,  type: select, proxies: [DIRECT], hidden: false}
 
  # 地理策略层 - url-test 自动选择，根据 yx_riolu.ini 调整
   - {name: 🀄 香港节点,  type: url-test, use: [优质服务商], filter: *FilterHK, url: 'http://cp.cloudflare.com/generate_204', interval: 300, tolerance: 50}
@@ -202,7 +207,7 @@ proxy-groups:
   - {name: 🇬🇧 英国节点,  type: url-test, use: [优质服务商], filter: *FilterUK, url: 'http://cp.cloudflare.com/generate_204', interval: 300, tolerance: 50}
   
   # 中转服务层 - LoadBalance负载均衡，提供中转服务提升连通性，选用一个或多个服务商做中转，比如 优质服务商，可通过正则表达式，过滤掉不需要的节点，单服务商时可注释掉
-  # - {name: 中转服务,  <<: *BaseLB, use: [优质服务商], filter: 'HK|TW', hidden: true, icon: https://git.imee.me/https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin.png}
+  # - {name: 中转服务,  <<: *BaseLB, use: [优质服务商], filter: 'HK|TW', hidden: true, icon: https://github.com/Koolson/Qure/raw/master/IconSet/Color/Round_Robin.png}
 
 # ==================== 规则路由 ====================
 # 规则顺序根据 yx_riolu.ini 调整，按照从上往下的顺序遍历，优先命中上位规则
@@ -759,89 +764,89 @@ rule-anchor:
 # 规则提供者（根据 yx_riolu.ini 调整）
 rule-providers: 
   # 拦截规则
-  Tracking:       {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Tracking.mrs}
-  Advertising:    {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Advertising.mrs} 
-  AdvertisingIP:  {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Advertising.mrs}
+  Tracking:       {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Tracking.mrs}
+  Advertising:    {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Advertising.mrs} 
+  AdvertisingIP:  {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Advertising.mrs}
 
   # 直连规则
-  Private:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Private.mrs}
-  PrivateIP:      {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Private.mrs}
-  Direct:         {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Direct.mrs}
+  Private:        {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Private.mrs}
+  PrivateIP:      {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Private.mrs}
+  Direct:         {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Direct.mrs}
   CustomDirect:   {type: http, behavior: classical, format: yaml, url: https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/refs/heads/main/rule/Custom_Direct_Classical.yaml, interval: 28800}
   SteamCDN:       {type: http, behavior: classical, format: yaml, url: https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/refs/heads/main/rule/Steam_CDN_Classical.yaml, interval: 28800}
   CustomPort:     {type: http, behavior: classical, format: yaml, url: https://raw.githubusercontent.com/Aethersailor/Custom_OpenClash_Rules/refs/heads/main/rule/Custom_Port_Direct.yaml, interval: 28800}
 
   # 即时通讯
-  Telegram:       {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Telegram.mrs}
-  TelegramIP:     {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Telegram.mrs}
+  Telegram:       {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Telegram.mrs}
+  TelegramIP:     {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Telegram.mrs}
 
   # 社交媒体
-  SocialMedia:    {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/SocialMedia.mrs}
-  SocialMediaIP:  {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/SocialMedia.mrs}
+  SocialMedia:    {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/SocialMedia.mrs}
+  SocialMediaIP:  {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/SocialMedia.mrs}
 
   # AI服务
-  AI:             {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/AI.mrs}  
-  AIIP:           {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/AI.mrs}
-  Bing:           {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Microsoft.mrs}
+  AI:             {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/AI.mrs}  
+  AIIP:           {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/AI.mrs}
+  Bing:           {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Microsoft.mrs}
 
   # GitHub
-  GitHub:         {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/GitHub.mrs}
+  GitHub:         {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/GitHub.mrs}
 
   # 测速工具
-  Speedtest:      {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Speedtest.mrs}
+  Speedtest:      {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Speedtest.mrs}
 
   # Steam
-  Steam:          {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Steam.mrs}
+  Steam:          {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Steam.mrs}
 
   # YouTube
-  YouTube:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/YouTube.mrs}
+  YouTube:        {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/YouTube.mrs}
 
   # AppleTV+
-  AppleTV:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Apple.mrs}
+  AppleTV:        {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Apple.mrs}
 
   # 苹果服务
-  AppleCN:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/AppleCN.mrs}
-  Apple:          {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Apple.mrs}
+  AppleCN:        {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/AppleCN.mrs}
+  Apple:          {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Apple.mrs}
 
   # 微软服务
-  Microsoft:      {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Microsoft.mrs}  
+  Microsoft:      {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Microsoft.mrs}  
 
   # 谷歌服务
-  GoogleFCM:      {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Google.mrs}
-  Google:         {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Google.mrs}
-  GoogleIP:       {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Google.mrs}
+  GoogleFCM:      {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Google.mrs}
+  Google:         {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Google.mrs}
+  GoogleIP:       {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Google.mrs}
 
   # TikTok
-  TikTok:         {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/TikTok.mrs}
+  TikTok:         {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/TikTok.mrs}
 
   # 流媒体服务
-  Netflix:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Netflix.mrs}
-  NetflixIP:      {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Netflix.mrs}
-  Disney:         {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Disney.mrs}
-  HBO:            {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/HBO.mrs}
-  PrimeVideo:     {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/PrimeVideo.mrs}
-  Emby:           {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Emby.mrs}
-  EmbyIP:         {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Emby.mrs}
-  Spotify:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Spotify.mrs}
+  Netflix:        {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Netflix.mrs}
+  NetflixIP:      {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Netflix.mrs}
+  Disney:         {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Disney.mrs}
+  HBO:            {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/HBO.mrs}
+  PrimeVideo:     {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/PrimeVideo.mrs}
+  Emby:           {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Emby.mrs}
+  EmbyIP:         {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Emby.mrs}
+  Spotify:        {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Spotify.mrs}
 
   # Bahamut
-  Bahamut:        {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Bahamut.mrs}
+  Bahamut:        {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Bahamut.mrs}
 
   # 游戏平台
-  Games:          {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Games.mrs}
+  Games:          {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Games.mrs}
 
   # 国外媒体和电商
-  Streaming:      {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Streaming.mrs}  
-  StreamingIP:    {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Streaming.mrs}
-  Ecommerce:      {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Ecommerce.mrs}
+  Streaming:      {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Streaming.mrs}  
+  StreamingIP:    {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Streaming.mrs}
+  Ecommerce:      {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Ecommerce.mrs}
 
   # 强制代理（GFW）
-  Proxy:          {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/Proxy.mrs}
-  ProxyIP:        {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/Proxy.mrs}
+  Proxy:          {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/Proxy.mrs}
+  ProxyIP:        {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/Proxy.mrs}
 
   # 国内流量
-  China:          {<<: *BehaviorDN, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/domain/China.mrs}
-  ChinaIP:        {<<: *BehaviorIP, url: https://git.imee.me/https://github.com/666OS/rules/raw/release/mihomo/ip/China.mrs}
+  China:          {<<: *BehaviorDN, url: https://github.com/666OS/rules/raw/release/mihomo/domain/China.mrs}
+  ChinaIP:        {<<: *BehaviorIP, url: https://github.com/666OS/rules/raw/release/mihomo/ip/China.mrs}
 
   # 补充规则 - 来自qiiiyu
   PayPal:         {<<: *domain, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/paypal.mrs"}
