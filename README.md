@@ -87,4 +87,6 @@ github地址:
 
 ## 增加异地组网WireGuard配置教程
 
+## 增加TailScale+DERP配置教程,无需大带宽
+
 # 待续...
