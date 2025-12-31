@@ -1,6 +1,6 @@
 # Tailscale + 私有 DERP 高性能组网方案全记录
 
-本方案旨在通过(国内云服务器)建立高性能中转节点，并优化防火墙规则，实现电脑间的 6ms 极致延迟直连。
+本方案旨在通过(国内云服务器)建立高性能中转节点，并优化防火墙规则，实现电脑间的 8ms(同省同运营商) 极致延迟直连。
 
 ## 一、服务器端基础环境准备
 
@@ -108,7 +108,7 @@ After=network.target
 # -a :443 监听端口
 # -stun 开启打洞辅助
 # -http-port -1 禁用 HTTP 模式
-# 因为你保留了服务器上的 tailscale 客户端，所以不需要写 -verify-clients=false，默认更安全
+# 因为保留了服务器上的 tailscale 客户端，所以不需要写 -verify-clients=false，默认更安全
 # -a :31226 对应原来的 443
 # -stun-port 12263 对应原来的 3478
 ExecStart=/usr/local/bin/derper -hostname 你的公网IP -a :31226 -http-port -1 -stun -stun-port 12263 -certmode manual
@@ -137,7 +137,7 @@ sudo systemctl status derp
 
 ### 7. 修改 Tailscale 官网 ACL（最关键的一步）
 
-如果不做这一步，你的设备还是会优先去连香港。
+如果不做这一步，设备还是会优先去连香港。
 
 1. 登录 Tailscale Admin Console - Access Control
 2. 在 JSON 配置文件中找到（或添加）`derpMap` 字段：
@@ -153,10 +153,10 @@ sudo systemctl status derp
                 {
                     "Name": "1",
                     "RegionID": 901,
-                    "HostName": "你的服务器公网IP",
+                    "HostName": "服务器公网IP",
                     "DERPPort": 31226,  // 必须对应 -a 参数
                     "STUNPort": 12263,  // 必须对应 -stun-port 参数
-                    "IPv4": "你的服务器公网IP",
+                    "IPv4": "服务器公网IP",
                     "InsecureForTests": true
                 }
             ]
@@ -197,5 +197,6 @@ ping <目标设备Tailscale-IP>
 
 ## 五、常见维护方案
 
+- **每次启动前,建议执行一遍ping对方电脑提前握手**
 - **IP 变动**：若云服务器 IP 更改，需同步更新后台 JSON 配置。
 - **直连失效**：优先检查本地路由器是否开启了 UPnP 或 Full Cone NAT。

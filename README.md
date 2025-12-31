@@ -89,4 +89,6 @@ github地址:
 
 ## 增加TailScale+DERP配置教程,无需大带宽
 
+## 增加ubuntu服务器初始化配置
+
 # 待续...
